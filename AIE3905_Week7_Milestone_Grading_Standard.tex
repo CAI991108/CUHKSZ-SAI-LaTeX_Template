@@ -1,0 +1,371 @@
+% !TEX program = xelatex
+% ============================================================================
+%  AIE3905 S03 & S06  Week 7 Milestone Grading Standard（中文版）
+%  由 AIE3905_Week7_Milestone_Grading_Standard.docx 转换而来
+%
+%  编译方式：XeLaTeX x2（中文需 ctex + 项目自带思源字体，pdfLaTeX 不支持本文档）
+%  依赖：fonts/ 目录下的思源宋体 NotoSerifSC-Regular/Bold.otf 与
+%        思源黑体 NotoSansSC-Regular/Bold.otf（SIL OFL 许可，随项目分发）
+%  recipe 见 .vscode/settings.json -> "xelatex x2 (CJK)"
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage{bookmark}
+\usepackage{fontspec}
+% 拉丁文与数学改用 Latin Modern 矢量字体：cmbright 在 XeLaTeX 下会退化为位图字形
+\setmainfont{lmroman10-regular.otf}[
+    BoldFont       = lmroman10-bold.otf,
+    ItalicFont     = lmroman10-italic.otf,
+    BoldItalicFont = lmroman10-bolditalic.otf
+]
+\setsansfont{lmsans10-regular.otf}[
+    BoldFont       = lmsans10-bold.otf,
+    ItalicFont     = lmsans10-oblique.otf,
+    BoldItalicFont = lmsans10-boldoblique.otf
+]
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+% 中文使用项目自带的思源宋体 / 思源黑体静态 OTF（fonts/ 目录），
+% 不依赖系统安装的字体，换一台机器也能直接编译
+% heading=true 才会加载 ctex 的标题模块，\ctexset{section = {format = ...}} 才可用
+\usepackage[UTF8, fontset=none, heading=true]{ctex}
+\setCJKmainfont{NotoSerifSC-Regular.otf}[
+    Path           = ./fonts/,
+    BoldFont       = NotoSerifSC-Bold.otf,
+    ItalicFont     = NotoSerifSC-Regular.otf,
+    BoldItalicFont = NotoSerifSC-Bold.otf
+]
+\setCJKsansfont{NotoSansSC-Regular.otf}[
+    Path           = ./fonts/,
+    BoldFont       = NotoSansSC-Bold.otf,
+    ItalicFont     = NotoSansSC-Regular.otf,
+    BoldItalicFont = NotoSansSC-Bold.otf
+]
+\newCJKfontfamily\zhhei{NotoSansSC-Regular.otf}[
+    Path           = ./fonts/,
+    BoldFont       = NotoSansSC-Bold.otf
+]
+% 标题统一使用思源黑体（西文保持 Latin Modern Roman）
+\ctexset{
+    section    = { format = \Large\zhhei\bfseries },
+    subsection = { format = \large\zhhei\bfseries },
+    subsubsection = { format = \normalsize\zhhei\bfseries }
+}
+\usepackage{needspace}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,241mm},
+ left=20mm,
+ top=36mm,
+ headheight=18.5mm, % 抬头 logo 高 16.6mm，留少量余量
+ headsep=8mm,      % 抬头分割线与正文的留白
+ }
+\usepackage{minted}
+% 设置minted的全局选项
+\setminted{
+    frame=lines,           % 添加边框
+    framesep=2mm,         % 边框间距
+    baselinestretch=1.2,  % 行间距
+    bgcolor=lightgray!10, % 背景色
+    fontsize=\footnotesize, % 字体大小
+    linenos=true,         % 显示行号
+    breaklines=true,      % 自动换行
+    breakanywhere=true,   % 允许在任意位置换行
+    tabsize=4            % Tab大小
+}
+\usepackage{xcolor} % 用于设置背景颜色
+\newcommand{\codeblock}[1]{%
+    \texttt{}\colorbox{gray!10}{\texttt{#1}}%
+}
+
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{\Large \zhhei\bfseries AIE3905 S03 \& S06 --- Week 7 Milestone Grading Schema\\[0.4em]
+       \large \zhhei\bfseries AI 与社会实践 I 第七周里程碑评分标准}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tabularx}
+
+% 定义 \theauthor 和 \thedate
+\newcommand{\theauthor}{Zijin CAI}
+\newcommand{\thedate}{\today}
+
+\author{Zijin CAI}
+
+% 页眉为整幅抬头 logo，页脚左日期 / 右课程名
+\fancypagestyle{plain}{%  the preset of fancyhdr
+    \fancyhf{} % 清空所有页眉页脚字段
+    \fancyhead[C]{\includegraphics[width=\textwidth]{./figs/cuhk-sai-logo01.png}}
+    \fancyfoot[L]{\thedate}
+    \fancyfoot[R]{AIE3905 --- AI 与社会实践 I}
+}
+
+% ---------------------------------------------------------------------------
+%  表格与列表排版辅助
+% ---------------------------------------------------------------------------
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X} % 自动换行、左对齐的弹性列
+
+% 全框线表（中文正式公文风）：四周与内部横竖线齐全，行距略放以利阅读
+\newcommand{\formaltable}{%
+  \small
+  \setlength{\tabcolsep}{5pt}%
+  \renewcommand{\arraystretch}{1.2}%
+  \setlength{\arrayrulewidth}{0.4pt}%
+}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlist[itemize]{topsep=3pt, itemsep=2pt, parsep=0pt, leftmargin=2em}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%-----Content Start-----%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{plain}
+\begin{document}
+\makeatletter
+\renewcommand{\maketitle}{
+  \begin{center}
+    {\Large \@title \par}
+  \end{center}
+}
+\makeatother
+
+\maketitle
+
+\begin{center}
+\small 真实痛点、可复现原型、失败与边界，贡献与答辩。
+\end{center}
+\vspace{0.2cm}
+
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|Y|c|Y|}
+\hline
+\textbf{组成} & \textbf{分数} & \textbf{课程总评换算与备注} \\ \hline
+Part A 团队共同工作留痕 & 70 & 同组成员原则上共享 \\ \hline
+Part B 个人贡献与答辩 & 30 & 每位成员单独评分 \\ \hline
+\textbf{Week 7 Milestone 合计} & \textbf{100} & (Part A + Part B 原始分) $\times$ 40\% = 40\% 课程分  \\ \hline
+\end{tabularx}
+\end{center}
+
+\noindent\textbf{Week 7 的成果汇报是AIE3905期中唯一评分 Milestone，占课程总分 40\%。}
+
+\noindent\textit{“汇报展示不等于真实证据；团队高分不替代个人理解；技术复杂度不影响真实价值、伦理边界和人工责任。”}
+
+\section{评审目标}
+团队是否已用一手证据收敛企业痛点，形成可检查的 Prototype v1.0 链路，并能基于测试、限制和责任边界判断项目是否值得继续。
+
+\section{评审材料标准}
+\begin{itemize}
+  \item 企业痛点分析画布，以及支持或推翻早期假设的证据摘要
+  \item Prototype v1.0 或可操作概念验证，展示核心任务的AI 处理、人工判断和输入输出
+  \item 正常案例、失败或边界案例的测试记录、备份证据和限制
+  \item 技术可行性、数据与伦理风险、人工责任和非 AI 替代路径说明
+  \item 版本记录、成员责任图和下一轮团队分工
+\end{itemize}
+
+\section{拟定评分标准}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|Y|c|Y|}
+\hline
+\textbf{评价维度} & \textbf{分值} & \textbf{评分归属} \\ \hline
+企业痛点证据与问题收敛 & 20 & 团队 \\ \hline
+Prototype v1.0 核心链路流程 & 20 & 团队 \\ \hline
+技术可行性与责任边界 & 15 & 团队 \\ \hline
+测试、限制与下一阶段分工 & 10 & 团队 \\ \hline
+团队交接与证据沟通 & 5 & 团队 \\ \hline
+个人贡献证据与所有权 & 10 & 个人 \\ \hline
+组件理解与系统输入输出 & 10 & 个人 \\ \hline
+验证、失败处理与反思总结 & 10 & 个人 \\ \hline
+每位学生原始分 & 100 & 团队 70 + 本人 30 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{评分等级与解释}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|Y|}
+\hline
+\textbf{评分等级} & \textbf{一般含义解释} \\ \hline
+优秀 Excellent & 证据完整、判断可追踪、方法适配真实场景，并能主动处理失败、不确定性与责任边界。 \\ \hline
+良好 Proficient & 达到主要要求，证据和逻辑基本可靠，仅有少量非关键缺口。 \\ \hline
+发展中 Developing & 部分要求已完成，但证据、连接、验证或责任边界存在明显缺口。 \\ \hline
+不足 Insufficient & 缺少关键证据，结论不可验证，或未达到继续投入所需的基本门槛。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Part A 团队共同评分与证据（70 分）}
+
+\subsection{企业痛点证据与问题收敛（20 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 18-20 & 使用现场或用户证据收敛出明确任务，展示证据如何改变早期假设，并给出可观察的成功标准。 \\ \hline
+良好 Proficient & 14-17 & 痛点与用户任务清楚，有可信的一手证据支持；假设修订和成功标准基本完整。 \\ \hline
+发展中 Developing & 10-13 & 有访谈或观察材料，但分析停留在罗列意见，痛点、证据和方案之间仍有明显跳跃。 \\ \hline
+不足 Insufficient & 0-9 & 缺少可核验的一手证据，问题由方案倒推，或展示内容与目标用户的实际任务脱节。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Prototype v1.0 核心流程（20 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 18-20 & 原型可操作，完整展示关键输入、AI 处理、人工判断与输出；核心流程可重复运行并有可信备份。 \\ \hline
+良好 Proficient & 14-17 & 主要流程可运行，少量步骤依赖手工或有轻微故障，但输入输出和用户价值可检查。 \\ \hline
+发展中 Developing & 10-13 & 部分组件可用，但端到端流程不稳定、难以复现，或关键输出只能口头描述。 \\ \hline
+不足 Insufficient & 0-9 & 没有可检查原型，演示与问题定义脱节，或无法证明核心任务已经实现。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{技术可行性与责任边界（15 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 13-15 & 说明模型、数据、工具与系统边界，比较非 AI 或替代路径，并用证据判断成本、性能、隐私、偏差、维护和人工责任。 \\ \hline
+良好 Proficient & 10-12 & 技术选择与问题基本匹配，主要约束和责任边界清楚，但替代路径或资源判断略简略。 \\ \hline
+发展中 Developing & 7-9 & 能描述所用工具，但选择依据、数据边界、成本、依赖或人工复核责任不清。 \\ \hline
+不足 Insufficient & 0-6 & 把调用工具等同于可行性，忽略关键风险，或计划使用未经授权的非公开或敏感信息。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{测试、限制与下一阶段分工（10 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 9-10 & 展示正常与失败或边界案例，区分技术、数据和流程问题，陈述真实限制，并给出有负责人和验收条件的下一步。 \\ \hline
+良好 Proficient & 7-8 & 有基本测试、限制和下一步，诊断或验收条件略不完整。 \\ \hline
+发展中 Developing & 5-6 & 只展示成功案例，或问题清单、限制和下一步较笼统。 \\ \hline
+不足 Insufficient & 0-4 & 没有有效测试证据，宣称系统可用但不讨论失败、限制或下一步。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{团队交接与证据沟通（5 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 5 & 展示结构清晰、交接自然、证据可读，每位成员的责任、模块和证据连接可追踪。 \\ \hline
+良好 Proficient & 4 & 结构和交接总体清楚，仅有轻微节奏或证据展示问题。 \\ \hline
+发展中 Developing & 3 & 展示顺序可理解，但部分责任、交接或证据难以跟随。 \\ \hline
+不足 Insufficient & 0-2 & 展示失序、关键证据不可读，或团队参与严重不完整。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Part B 个人贡献与答辩（30 分）}
+每位成员单独回答问题并获得独立分数。评审者应交叉核对版本记录、提交物、同伴或导师证据与现场回答；互评不得按人气直接加减分。
+
+\subsection{个人贡献证据与所有权（10 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 9-10 & 定位本人开发、调研、分析或验证的具体工作，展示版本、记录和关键决策，并区分个人与团队成果。 \\ \hline
+良好 Proficient & 7-8 & 贡献定位与证据清楚，少量决策依据或所有权边界仍需补充。 \\ \hline
+发展中 Developing & 5-6 & 能指出参与内容，但无法清楚证明做了什么改变、分析或验证。 \\ \hline
+不足 Insufficient & 0-4 & 无法识别或证明有意义的个人贡献。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{组件理解与系统输入输出（10 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 9-10 & 准确解释本人工作涉及的输入、处理、输出、相邻接口、设计取舍和责任边界，并能在原型或证据中定位。 \\ \hline
+良好 Proficient & 7-8 & 能解释主要输入输出和接口，仅在少量细节或取舍上不确定。 \\ \hline
+发展中 Developing & 5-6 & 理解一般作用，但对关键数据、接口、假设或责任边界解释困难。 \\ \hline
+不足 Insufficient & 0-4 & 答案与系统或证据不一致，或无法解释所声称负责的主要部分。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{验证、失败处理与反思总结（10 分）}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{评分等级} & \textbf{分数} & \textbf{可核验表现} \\ \hline
+优秀 Excellent & 9-10 & 说明本人如何验证正常和失败条件，识别真实限制，并提出技术、研究或流程上具体且负责的下一步。 \\ \hline
+良好 Proficient & 7-8 & 能说明测试、限制和合理下一步，但证据或诊断深度有限。 \\ \hline
+发展中 Developing & 5-6 & 提到测试或限制，但证据薄弱，下一步缺少负责人或完成条件。 \\ \hline
+不足 Insufficient & 0-4 & 没有有意义的验证证据，无法讨论失败处理、限制或改进。 \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{证据与责任边界}
+\begin{itemize}
+  \item 原始或可追溯资料包括访谈或观察记录、会议纪要、版本日志、测试记录、反馈记录和决策记录。
+  \item 清楚区分事实、用户观点、团队解释、假设和未知；至少展示一项未达到预期的证据。
+  \item 允许使用生成式 AI 辅助构思、原型开发、资料整理、质性编码和翻译，但必须说明用途和人工复核方式。
+  \item 不得让 AI 生成或改写成看似真实的访谈、用户反馈、企业意见、测试结果、引用或版本记录。
+  \item 企业非公开信息、个人身份信息、敏感图像和未经授权数据不得上传第三方工具；无法确认授权时，默认不得上传。
+  \item 企业导师和同伴意见是证据输入；授课教师负责跨组校准、异常处理和最终成绩。
+\end{itemize}
+
+\noindent\textbf{技术故障：}现场故障不自动等于零。若有可信的原始版本、未剪辑备份、日志和测试证据，可按可核验程度评分；但备份证据不等同于一次成功的现场端到端演示。
+
+\section{通用评分规则}
+\begin{itemize}
+  \item 同一问题只在最相关的评价维度扣分，不重复处罚。
+  \item 团队成员原则上共享 Part A；缺席、无法验证参与或课程政策要求单独处理时除外。
+  \item 任何高分判断都必须能指向可检查的提交物、记录、现场表现或答辩证据。
+  \item 企业或同伴的正面意见不能覆盖明显的技术、伦理或证据缺口；负面意见也必须结合任务与证据解释。
+  \item 如存在捏造证据、冒充一手调研、未经授权处理敏感信息或其他学术诚信问题，按大学和课程政策处理，而不是仅在量表内扣分。
+\end{itemize}
+
+\section{版本冻结与补评政策}
+\noindent\textbf{政策目的：}补评用于核验因缺席而未被评估的原始证据，不是延长开发时间，也不是在参加过评审后提高分数的第二次机会。
+
+\subsection{版本冻结}
+\begin{itemize}
+  \item 补评使用原截止时间提交的版本、材料和证据。
+  \item 截止后工作只可解释必要的运行修复，必须明确披露，不能提高原截止时缺失的功能或证据得分。
+\end{itemize}
+
+\subsection{缺席处理}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|Y|c|}
+\hline
+\textbf{情形} & \textbf{处理} & \textbf{最高原始分} \\ \hline
+一名成员获批缺席 & 团队按时评审；缺席成员使用原团队提交完成个人核验。已有团队分不受影响。 & 100 \\ \hline
+一名成员未获批缺席 & 团队按时评审；如课程允许补评，仅该成员使用原提交完成个人核验并受上限影响。 & 70 \\ \hline
+全组获批缺席 & 另行安排完整团队评审与个人答辩，使用原提交版本。 & 每人 100 \\ \hline
+全组未获批缺席 & 如课程允许，安排一次完整补评；每名成员均受上限影响。 & 每人 70 \\ \hline
+\end{tabularx}
+\end{center}
+
+\noindent 未获批缺席的上限在量表评分后应用，不再因同一缺席在其他评价维度重复扣分。具体安排服从大学和课程正式政策。
+
+\needspace{12\baselineskip}
+\section{评审流程清单（供评审打分参考）}
+\begin{itemize}[label=$\mdlgwhtsquare$]
+  \item 已核对提交版本、时间和材料完整性
+  \item 已查看一手来源证据并现场检查 Prototype v1.0 核心流程
+  \item 已记录一项失败、边界、限制或未知
+  \item 已确认生成式 AI、隐私、授权、脱敏和人工复核边界
+  \item 已分别记录团队 Part A 和每名成员 Part B，且没有重复扣分
+  \item 已给出可解释的下一阶段的团队分工安排
+\end{itemize}
+
+\end{document}

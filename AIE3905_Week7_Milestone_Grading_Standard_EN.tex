@@ -1,0 +1,357 @@
+% !TEX program = xelatex
+% ============================================================================
+%  AIE3905 S03 & S06  Week 7 Milestone Grading Schema (English version)
+%  English counterpart of AIE3905_Week7_Milestone_Grading_Standard.tex
+%  Structure, section order, tables and emphasis mirror the revised Chinese
+%  source one-for-one; wording is based on the English .docx original.
+%
+%  编译方式：XeLaTeX x2（与中文版共用 .vscode/settings.json 的 "xelatex x2 (CJK)"）
+%  本文档不含中文，不需要 ctex / 思源字体，仅使用 Latin Modern OpenType 字体族
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage{bookmark}
+\usepackage{fontspec}
+% 拉丁文与数学改用 Latin Modern 矢量字体：cmbright 在 XeLaTeX 下会退化为位图字形
+\setmainfont{lmroman10-regular.otf}[
+    BoldFont       = lmroman10-bold.otf,
+    ItalicFont     = lmroman10-italic.otf,
+    BoldItalicFont = lmroman10-bolditalic.otf
+]
+\setsansfont{lmsans10-regular.otf}[
+    BoldFont       = lmsans10-bold.otf,
+    ItalicFont     = lmsans10-oblique.otf,
+    BoldItalicFont = lmsans10-boldoblique.otf
+]
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+% 标题统一使用 Latin Modern Sans（对应中文版的思源黑体），正文保持 Latin Modern Roman
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}%
+    {\normalfont\Large\sffamily\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+    {\normalfont\large\sffamily\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+    {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+    {\normalfont\normalsize\sffamily\bfseries}}
+\makeatother
+\usepackage{needspace}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,241mm},
+ left=20mm,
+ top=36mm,
+ headheight=18.5mm, % 抬头 logo 高 16.6mm，留少量余量
+ headsep=8mm,      % 抬头分割线与正文的留白
+ }
+\usepackage{minted}
+% 设置minted的全局选项
+\setminted{
+    frame=lines,           % 添加边框
+    framesep=2mm,         % 边框间距
+    baselinestretch=1.2,  % 行间距
+    bgcolor=lightgray!10, % 背景色
+    fontsize=\footnotesize, % 字体大小
+    linenos=true,         % 显示行号
+    breaklines=true,      % 自动换行
+    breakanywhere=true,   % 允许在任意位置换行
+    tabsize=4            % Tab大小
+}
+\usepackage{xcolor} % 用于设置背景颜色
+\newcommand{\codeblock}[1]{%
+    \texttt{}\colorbox{gray!10}{\texttt{#1}}%
+}
+
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{\Large \sffamily\bfseries AIE3905 S03 \& S06 --- Week 7 Milestone Grading Schema\\[0.4em]
+       \large \sffamily\bfseries AI and Social Practice I --- Week 7 Milestone Grading Standard}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tabularx}
+
+% 定义 \theauthor 和 \thedate
+\newcommand{\theauthor}{Zijin CAI}
+\newcommand{\thedate}{\today}
+
+\author{Zijin CAI}
+
+% 页眉为整幅抬头 logo，页脚左日期 / 右课程名
+\fancypagestyle{plain}{%  the preset of fancyhdr
+    \fancyhf{} % 清空所有页眉页脚字段
+    \fancyhead[C]{\includegraphics[width=\textwidth]{./figs/cuhk-sai-logo01.png}}
+    \fancyfoot[L]{\thedate}
+    \fancyfoot[R]{AIE3905 --- AI and Social Practice I}
+}
+
+% ---------------------------------------------------------------------------
+%  表格与列表排版辅助
+% ---------------------------------------------------------------------------
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X} % 自动换行、左对齐的弹性列
+
+% 全框线表：四周与内部横竖线齐全，行距略放以利阅读
+\newcommand{\formaltable}{%
+  \small
+  \setlength{\tabcolsep}{5pt}%
+  \renewcommand{\arraystretch}{1.2}%
+  \setlength{\arrayrulewidth}{0.4pt}%
+}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlist[itemize]{topsep=3pt, itemsep=2pt, parsep=0pt, leftmargin=2em}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%-----Content Start-----%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{plain}
+\begin{document}
+\makeatletter
+\renewcommand{\maketitle}{
+  \begin{center}
+    {\Large \@title \par}
+  \end{center}
+}
+\makeatother
+
+\maketitle
+
+\begin{center}
+\small Genuine pain points, a reproducible prototype, failure and boundaries, contribution and viva.
+\end{center}
+\vspace{0.2cm}
+
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|Y|c|Y|}
+\hline
+\textbf{Component} & \textbf{Points} & \textbf{Course Grade Conversion and Notes} \\ \hline
+Part A Team Joint Work Evidence & 70 & Normally shared by team members \\ \hline
+Part B Individual Contribution and Viva & 30 & Scored separately for each member \\ \hline
+\textbf{Week 7 Milestone Total} & \textbf{100} & (Part A + Part B raw score) $\times$ 40\% = 40\% of the course grade \\ \hline
+\end{tabularx}
+\end{center}
+
+\noindent\textbf{The Week 7 outcome presentation is the only graded Milestone in AIE3905 and counts for 40\% of the total course grade.}
+
+\noindent\textit{``A polished presentation is not the same as genuine evidence; a high team score cannot replace individual understanding; technical complexity does not change real value, ethical boundaries, or human accountability.''}
+
+\section{Review Purpose}
+Whether the team has converged on the enterprise pain point using first-hand evidence, formed an inspectable Prototype v1.0 workflow, and can judge whether the project is worth continuing based on testing, limitations, and accountability boundaries.
+
+\section{Required Materials}
+\begin{itemize}
+  \item An enterprise pain point analysis canvas, and a summary of first-hand evidence that supports or challenges early assumptions
+  \item Prototype v1.0 or a workable proof of concept showing the core task's AI processing, human judgement, and inputs and outputs
+  \item Test records, backup evidence, and limitations for normal cases and for failure or boundary cases
+  \item An explanation of technical feasibility, data and ethical risks, human accountability, and non-AI alternatives
+  \item Version records, a member responsibility map, and the next round of team task allocation
+\end{itemize}
+
+\section{Proposed Scoring Standard}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|Y|c|Y|}
+\hline
+\textbf{Assessment Dimension} & \textbf{Points} & \textbf{Team or Individual} \\ \hline
+Enterprise Pain Point Evidence and Problem Convergence & 20 & Team \\ \hline
+Prototype v1.0 Core Workflow & 20 & Team \\ \hline
+Technical Feasibility and Accountability Boundaries & 15 & Team \\ \hline
+Testing, Limitations, and Next-Stage Division of Labour & 10 & Team \\ \hline
+Team Handover and Evidence Communication & 5 & Team \\ \hline
+Evidence of Individual Contribution and Ownership & 10 & Individual \\ \hline
+Understanding of Components and System Inputs and Outputs & 10 & Individual \\ \hline
+Validation, Failure Handling, and Reflection & 10 & Individual \\ \hline
+Raw score for each student & 100 & Team 70 + individual 30 \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Performance Level Interpretation}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|Y|}
+\hline
+\textbf{Performance Level} & \textbf{General Interpretation} \\ \hline
+Excellent & Evidence is complete, judgements are traceable, the method fits the real context, and the team actively addresses failure, uncertainty, and accountability boundaries. \\ \hline
+Proficient & Meets the main requirements with generally reliable evidence and reasoning; only minor non-critical gaps remain. \\ \hline
+Developing & Completes some requirements, but has material gaps in evidence, connections, validation, or accountability boundaries. \\ \hline
+Insufficient & Lacks critical evidence, makes unverifiable claims, or does not meet the minimum threshold for continued investment. \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Part A Team Joint Scoring and Evidence (70 Points)}
+
+\subsection{Enterprise Pain Point Evidence and Problem Convergence (20 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 18-20 & Uses field or user evidence to converge on a specific task, shows how the evidence changed early assumptions, and states observable success criteria. \\ \hline
+Proficient & 14-17 & Defines the pain point and the user task clearly with credible first-hand evidence; revisions to assumptions and success criteria are mostly complete. \\ \hline
+Developing & 10-13 & Includes interview or observation material, but mainly lists opinions; the links among the pain point, evidence, and proposed solution remain clearly weak. \\ \hline
+Insufficient & 0-9 & Provides no verifiable first-hand evidence, works backward from a preferred solution, or presents work disconnected from the target user's actual task. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Prototype v1.0 Core Workflow (20 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 18-20 & Presents an operational prototype with the key input, AI processing, human judgement, and output; the core workflow can be repeated and has credible backup evidence. \\ \hline
+Proficient & 14-17 & Runs the main workflow with minor manual steps or faults; the input, output, and user value remain inspectable. \\ \hline
+Developing & 10-13 & Shows some working components, but the end-to-end workflow is unstable, hard to reproduce, or described mainly through claims rather than evidence. \\ \hline
+Insufficient & 0-9 & Provides no inspectable prototype, demonstrates work unrelated to the problem definition, or cannot show that the core task has been implemented. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Technical Feasibility and Accountability Boundaries (15 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 13-15 & Explains the model, data, tools, and system boundaries; compares a non-AI or alternative approach; and uses evidence to assess cost, performance, privacy, bias, maintenance, and human accountability. \\ \hline
+Proficient & 10-12 & Matches the technical approach to the problem and identifies the main constraints and accountability boundaries, with limited analysis of alternatives or resources. \\ \hline
+Developing & 7-9 & Names the tools used but gives weak justification for the choice; data boundaries, cost, dependencies, or human review responsibilities are unclear. \\ \hline
+Insufficient & 0-6 & Treats tool use as proof of feasibility, ignores material risks, or plans to use confidential or sensitive information without authorization. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Testing, Limitations, and Next-Stage Division of Labour (10 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 9-10 & Shows normal and failure or boundary cases, distinguishes technical, data, and process issues, states genuine limitations, and assigns a next action with an owner and acceptance condition. \\ \hline
+Proficient & 7-8 & Provides basic tests, limitations, and a reasonable next action, with minor gaps in diagnosis or acceptance conditions. \\ \hline
+Developing & 5-6 & Shows only successful cases, or gives a general problem list, limitations, and next steps without enough evidence or specificity. \\ \hline
+Insufficient & 0-4 & Provides no meaningful test evidence, claims the system works without discussing failure or limitations, or gives no actionable next step. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Team Handover and Evidence Communication (5 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 5 & Uses a clear structure and smooth handovers; evidence is readable; each member's responsibility, module, and evidence trail can be followed. \\ \hline
+Proficient & 4 & Communicates the structure and handovers clearly, with only minor pacing or evidence presentation issues. \\ \hline
+Developing & 3 & Uses an understandable sequence, but some responsibilities, handovers, or evidence are difficult to follow. \\ \hline
+Insufficient & 0-2 & Presents the work in a disorganized way, makes key evidence unreadable, or shows seriously incomplete team participation. \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Part B Individual Contribution and Viva (30 Points)}
+Each member answers questions separately and receives an individual score. Reviewers should cross-check version records, submitted work, peer or mentor evidence, and live answers; peer assessment must not add or deduct points based on popularity.
+
+\subsection{Evidence of Individual Contribution and Ownership (10 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 9-10 & Identifies specific development, research, analysis, or validation work; shows versions, records, and key decisions; and separates individual work from team results. \\ \hline
+Proficient & 7-8 & Identifies the contribution with clear evidence, with minor gaps in the decision rationale or ownership boundary. \\ \hline
+Developing & 5-6 & Names areas of participation but cannot clearly show what was changed, analysed, or validated. \\ \hline
+Insufficient & 0-4 & Cannot identify or substantiate a meaningful individual contribution. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Understanding of Components and System Inputs and Outputs (10 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 9-10 & Accurately explains the relevant inputs, processing, outputs, adjacent interfaces, design trade-offs, and accountability boundaries, and locates them in the prototype or evidence. \\ \hline
+Proficient & 7-8 & Explains the main inputs, outputs, and interfaces, with uncertainty limited to minor details or trade-offs. \\ \hline
+Developing & 5-6 & Understands the component's general role but struggles to explain key data, interfaces, assumptions, or accountability boundaries. \\ \hline
+Insufficient & 0-4 & Gives answers inconsistent with the system or evidence, or cannot explain the main component claimed as personal work. \\ \hline
+\end{tabularx}
+\end{center}
+
+\subsection{Validation, Failure Handling, and Reflection (10 Points)}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|c|Y|}
+\hline
+\textbf{Performance Level} & \textbf{Score} & \textbf{Verifiable Performance} \\ \hline
+Excellent & 9-10 & Explains how normal and failure conditions were validated, identifies genuine limitations, and proposes a specific and responsible technical, research, or process action. \\ \hline
+Proficient & 7-8 & Explains the tests, limitations, and a reasonable next step, but provides limited evidence or diagnostic depth. \\ \hline
+Developing & 5-6 & Mentions testing or limitations with weak evidence; the next step lacks an owner or completion condition. \\ \hline
+Insufficient & 0-4 & Provides no meaningful validation evidence and cannot discuss failure handling, limitations, or improvement. \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Evidence and Accountability Boundaries}
+\begin{itemize}
+  \item Primary or traceable sources include interview or observation records, meeting notes, version logs, test records, feedback records, and decision records.
+  \item Clearly distinguish facts, user views, team interpretations, assumptions, and unknowns; show at least one piece of evidence that did not meet expectations.
+  \item Generative AI may support ideation, prototype development, information organization, qualitative coding, and translation, but its use and the human review process must be stated.
+  \item Do not use AI to create or rewrite interviews, user feedback, enterprise opinions, test results, quotations, or version records so that they appear genuine.
+  \item Confidential enterprise information, personal data, sensitive images, and unauthorized data must not be uploaded to third-party tools; if authorization cannot be confirmed, the default is not to upload.
+  \item Mentor and peer comments from the enterprise are evidence inputs; the instructor is responsible for cross-team calibration, exception handling, and final grades.
+\end{itemize}
+
+\noindent\textbf{Technical failure:} A live failure does not automatically mean zero. If there are credible original versions, unedited backups, logs, and test evidence, reviewers may score according to how verifiable they are; but backup evidence is not the same as a successful live end-to-end demonstration.
+
+\section{General Scoring Rules}
+\begin{itemize}
+  \item Deduct for the same problem only in the most relevant assessment dimension; do not apply duplicate penalties.
+  \item Team members normally share Part A, except when absence, unverifiable participation, or formal course policy requires separate treatment.
+  \item Every high score must point to an inspectable submission, record, live performance, or viva response.
+  \item Positive comments from the enterprise or peers cannot override clear technical, ethical, or evidence gaps; negative comments must also be interpreted against the task and the evidence.
+  \item Fabricated evidence, misrepresented first-hand research, unauthorized processing of sensitive information, or other academic integrity concerns are handled under university and course policy rather than only through rubric deductions.
+\end{itemize}
+
+\section{Version Freeze and Make-Up Policy}
+\noindent\textbf{Purpose:} A make-up review verifies the original evidence that was not assessed because of absence; it is not extended development time, and it is not a second chance to raise a score after attending the review.
+
+\subsection{Version Freeze}
+\begin{itemize}
+  \item The make-up review uses the version, materials, and evidence submitted by the original deadline.
+  \item Work completed after the deadline may explain only necessary operational repairs; it must be disclosed and cannot earn credit for functionality or evidence missing at the original deadline.
+\end{itemize}
+
+\subsection{Absence Handling}
+\begin{center}
+\formaltable
+\begin{tabularx}{\textwidth}{|l|Y|c|}
+\hline
+\textbf{Situation} & \textbf{Treatment} & \textbf{Maximum Raw Score} \\ \hline
+One member has an approved absence & The team completes the scheduled review; the absent member completes an individual verification using the original team submission. Existing team scores are unaffected. & 100 \\ \hline
+One member has an unapproved absence & The team completes the scheduled review; if the course permits a make-up, only that member completes an individual verification using the original submission and is subject to the cap. & 70 \\ \hline
+The whole team has approved absences & A complete team review and individual viva are rescheduled using the original submitted version. & 100 each \\ \hline
+The whole team has unapproved absences & If the course permits, one complete make-up review is arranged; every member is subject to the cap. & 70 each \\ \hline
+\end{tabularx}
+\end{center}
+
+\noindent The cap for an unapproved absence is applied after rubric scoring, and the same absence must not be deducted again in other assessment dimensions. Specific arrangements remain subject to formal university and course policy.
+
+\needspace{12\baselineskip}
+\section{Review Completion Checklist (for Reviewer Scoring Reference)}
+\begin{itemize}[label=$\mdlgwhtsquare$]
+  \item Submission version, time, and material completeness checked
+  \item First-hand source evidence reviewed and Prototype v1.0 core workflow inspected live
+  \item At least one failure, boundary, limitation, or unknown recorded
+  \item Generative AI use, privacy, authorization, de-identification, and human review boundaries confirmed
+  \item Team Part A and each member's Part B recorded separately without duplicate deductions
+  \item An explainable next-stage team task allocation has been given
+\end{itemize}
+
+\end{document}

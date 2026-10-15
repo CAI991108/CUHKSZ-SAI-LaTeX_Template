@@ -1,0 +1,53 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-shell-escape",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-output-directory=./tmp",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "./tmp/%DOCFILE%"
+            ]
+        },
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-shell-escape",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-output-directory=./tmp",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex x2 (CJK)",
+            "tools": ["xelatex", "xelatex"]
+        },
+        {
+            "name": "pdflatex -> bibtex -> pdflatex*2",
+            "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+        }
+    ],
+    "latex-workshop.latex.recipe.default": "xelatex x2 (CJK)",
+    "latex-workshop.latex.build.enableMagicComments": false,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.outDir": "./tmp",
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "cSpell.words": [
+        "thebibliography"
+    ]
+  }

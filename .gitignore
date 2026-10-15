@@ -1,0 +1,44 @@
+# ============================================================================
+#  LaTeX build output
+#  The VS Code recipe in .vscode/settings.json compiles into ./tmp,
+#  so the first rule alone covers the normal workflow.  The remaining rules
+#  keep the repository clean if someone compiles in place instead.
+# ============================================================================
+tmp/
+out/
+auxil/
+minted/
+_minted*/
+
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ind
+*.ilg
+*.xdv
+/*.pdf
+
+# ============================================================================
+#  Editors / operating systems
+# ============================================================================
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
