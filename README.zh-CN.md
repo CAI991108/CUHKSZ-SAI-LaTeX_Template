@@ -1,143 +1,216 @@
+<div align="center">
+
+<img src="figs/cuhk-sai-logo01.png" alt="香港中文大学（深圳）· 理工学院" width="100%">
+
 # CUHKSZ-SAI LaTeX 模板
 
-香港中文大学（深圳）理工学院课程作业 LaTeX 模板（已内置 SAI 抬头 logo 与 AIE3905 评分标准版式），
-包含中文与英文两份文档，两者均使用 **XeLaTeX** 编译。
+**香港中文大学（深圳）课程作业中英双语 LaTeX 模板 —— 认真排版，不靠手调。**
 
-| 文档 | 文件 | 页数 |
-| --- | --- | --- |
-| 中文版 | [`AIE3905_Week7_Milestone_Grading_Standard.tex`](./AIE3905_Week7_Milestone_Grading_Standard.tex) | 5 |
-| 英文版 | [`AIE3905_Week7_Milestone_Grading_Standard_EN.tex`](./AIE3905_Week7_Milestone_Grading_Standard_EN.tex) | 6 |
+*中文 / English · XeLaTeX · 结果可复现 · 一条命令装好环境*
 
-当前两份文档均可编译到 **0 错误、0 过满/欠满盒子、0 缺字**。
+[![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
+[![Engine: XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-008080?style=flat-square&logo=latex&logoColor=white)](#-环境依赖)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-快速开始)
+[![Setup](https://img.shields.io/badge/setup-%E4%B8%80%E6%9D%A1%E5%91%BD%E4%BB%A4-ff6f00?style=flat-square)](#-快速开始)
+
+[![Build](https://img.shields.io/badge/build-passing-3fb950?style=flat-square)](#-编译)
+[![Docs](https://img.shields.io/badge/documents-%E4%B8%AD%E8%8B%B1%E5%8F%8C%E8%AF%AD-6e40c9?style=flat-square)](#-文档)
+[![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20%E5%86%85%E7%BD%AE-c2185b?style=flat-square)](fonts/LICENSE.txt)
+[![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
+
+[简体中文](README.zh-CN.md) · [English](README.md)
+
+</div>
 
 ---
 
-## 一、环境依赖
+## ✨ 特色
 
-| 组件 | 说明 |
+| | |
 | --- | --- |
-| TeX 发行版 | Windows 用 MiKTeX，macOS / Linux 用 TeX Live 2023 或更新 |
-| 编译引擎 | **XeLaTeX** —— pdfLaTeX 无法编译这两份文档 |
-| Python + Pygments | 仅 `minted` 宏包需要。目前两份文档只在导言区配置了 `minted`，正文没有代码块，所以没有 Pygments 也能编过；仍建议保留，以便日后添加代码块。 |
-
-> **为什么必须用 XeLaTeX？** 中文版以 `ctex` 的 `fontset=none` 搭配本项目内置的
-> Noto CJK OpenType 字体，需要支持 OpenType 的 Unicode 引擎；英文版另外使用
-> `fontspec` 与 `unicode-math` 调用 Latin Modern。因此本仓库只配置了 XeLaTeX，
-> 请勿把 recipe 改成 pdfLaTeX。
+| 🈶 **天生双语** | 中英两份文档逐节一一对应，改一处内容在两边都有可预期的对应关系。 |
+| 📐 **排版而非手调** | 抬头高度、抬头与正文间距、表格线宽、行距，全部是显式数值，不依赖任何「默认值恰好合适」。 |
+| 🔁 **到处都能复现** | 字体随仓库内置、工具链固定，笔记本上和在机房电脑上编出的 PDF 完全一致。 |
+| ⚡ **一条命令** | 克隆 → 跑一次配置脚本 → 编译。不用手动找宏包，不用回忆「当初用的是哪个引擎」。 |
+| 🧾 **干净输出** | 两份文档均编译到 **0 错误、0 过满/欠满盒子、0 缺字**；一旦不再干净，编译脚本会直接报出来。 |
 
 ---
 
-## 二、换一台新电脑后怎么快速跑起来
+## 📄 文档
 
-1. **安装 TeX 发行版**
+| | 文档 | 页数 | 引擎 |
+| :-: | --- | :-: | :-: |
+| 中文 | [`AIE3905_Week7_Milestone_Grading_Standard.tex`](AIE3905_Week7_Milestone_Grading_Standard.tex) | `5` | XeLaTeX |
+| EN | [`AIE3905_Week7_Milestone_Grading_Standard_EN.tex`](AIE3905_Week7_Milestone_Grading_Standard_EN.tex) | `6` | XeLaTeX |
 
-   | 平台 | 命令 |
-   | --- | --- |
-   | Windows | `winget install --id MiKTeX.MiKTeX` |
-   | macOS | `brew install --cask mactex-no-gui` |
-   | Debian / Ubuntu | `sudo apt install texlive-xetex texlive-lang-chinese texlive-latex-extra texlive-fonts-extra` |
-   | Fedora | `sudo dnf install texlive-scheme-full` |
-   | Arch | `sudo pacman -S texlive-most texlive-langchinese` |
+> 两份均为 AIE3905 *S03 & S06 —— 第七周里程碑评分标准*：通栏 SAI 抬头、
+> 正式全框线评分表、课程页脚，A4 版式。
 
-2. **克隆仓库并一键安装宏包 + Pygments**
+---
 
-   ```powershell
-   # Windows
-   git clone <仓库地址>
-   cd CUHKSZ-SAI-LaTeX_Template
-   .\scripts\setup-miktex.ps1
-   ```
+## 🚀 快速开始
 
-   ```bash
-   # macOS / Linux
-   git clone <仓库地址>
-   cd CUHKSZ-SAI-LaTeX_Template
-   chmod +x scripts/*.sh
-   ./scripts/setup-texlive.sh
-   ```
+**① 安装 TeX 发行版**
 
-   两个脚本都是幂等的：已装好的宏包会被识别并跳过，重复执行不会有副作用。
+| 平台 | 命令 |
+| --- | --- |
+| Windows | `winget install --id MiKTeX.MiKTeX` |
+| macOS | `brew install --cask mactex-no-gui` |
+| Debian / Ubuntu | `sudo apt install texlive-xetex texlive-lang-chinese texlive-latex-extra texlive-fonts-extra` |
+| Fedora | `sudo dnf install texlive-scheme-full` |
+| Arch | `sudo pacman -S texlive-most texlive-langchinese` |
 
-3. **编译**
+**② 安装宏包**
 
-   ```powershell
-   .\scripts\build.ps1 -All            # Windows：编译两份文档
-   ```
+```powershell
+git clone <仓库地址> && cd CUHKSZ-SAI-LaTeX_Template
+.\scripts\setup-miktex.ps1        # Windows
+```
 
-   ```bash
-   ./scripts/build.sh --all            # macOS / Linux：编译两份文档
-   ```
+```bash
+git clone <仓库地址> && cd CUHKSZ-SAI-LaTeX_Template
+chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
+```
 
-   PDF 输出到 `tmp/`。
+**③ 编译**
 
-**配置脚本做了什么**
+```powershell
+.\scripts\build.ps1 -All          # Windows
+```
 
-- 定位 `xelatex.exe` / `xelatex`，找不到时给出安装指引并明确报错。
-- 安装两份文档需要的全部 LaTeX 宏包（见第四节表格）。MiKTeX 脚本会先用
-  `miktex packages info` 探测，因为 MiKTeX 把「重复安装已装包」当作错误处理。
+```bash
+./scripts/build.sh --all          # macOS / Linux
+```
+
+<div align="center">
+<sub>PDF 输出到 <code>tmp/</code> —— <b>无需任何额外配置。</b></sub>
+</div>
+
+<details>
+<summary><b>配置脚本到底做了什么</b></summary>
+
+<br>
+
+- 定位 `xelatex`，找不到时给出安装指引并明确报错。
+- 安装两份文档需要的全部 21 个 LaTeX 宏包；先用 `miktex packages info` 探测，
+  因为 MiKTeX 会把「重复安装已装包」当作错误。
 - 检查 `pygmentize`，缺失时用 `pip` 安装 Pygments。
-- 校验内置字体、logo 与 `fonts/LICENSE.txt` 是否齐全。
+- 校验内置字体、抬头图与 `fonts/LICENSE.txt` 是否齐全。
+
+两个脚本都是**幂等**的 —— 重复执行只会汇报「已就绪」，不会做任何破坏性操作。
+
+</details>
 
 ---
 
-## 三、编译方式
+## 🔧 整体流程
 
-### VS Code
+```mermaid
+flowchart LR
+    A([git clone]) --> B["安装 TeX<br/><sub>MiKTeX · TeX Live</sub>"]
+    B --> C["配置脚本<br/><sub>宏包 + Pygments</sub>"]
+    C --> D["编译脚本<br/><sub>XeLaTeX ×2</sub>"]
+    D --> E{"0 错误?"}
+    E -- 是 --> F([tmp/*.pdf])
+    E -- 否 --> G["tmp/*.log"]
+    G --> D
 
-`.vscode/settings.json` 已纳入版本库，构建 recipe 也配好了。
+    style F fill:#2ea44f,color:#fff,stroke:#1b7f3b
+    style E fill:#fff8c5,stroke:#d4a72c
+```
 
-- 打开任一 `.tex` 文件，按 **Ctrl+Alt+B**，或从命令面板执行
-  **LaTeX Workshop: Build LaTeX project**。
-- 默认 recipe 为 **`xelatex x2 (CJK)`** —— XeLaTeX 连跑两遍，保证 `hyperref` 的
-  书签与页码标签正确。
-- 输出目录为 `tmp/`；**Ctrl+Alt+V** 在标签页中打开 PDF，SyncTeX 正反向搜索已启用。
+XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。随后编译脚本从 `.log`
+中统计错误数、过满/欠满盒子数与缺字数，不干净时返回非零退出码 ——
+所以坏掉的编译结果不可能悄悄蒙混过关。
 
-recipe 由 `latex-workshop.latex.recipe.default` 指定。magic comment 被刻意关闭，
-因此文件首行的 `% !TEX program = xelatex` 只是注释说明，不参与构建。
+---
+
+## 🧰 环境依赖
+
+| 组件 | 版本 | 作用 |
+| --- | --- | --- |
+| TeX 发行版 | MiKTeX · TeX Live 2023+ | 提供引擎与宏包 |
+| 编译引擎 | **XeLaTeX** | pdfLaTeX 无法编译这两份文档 —— [为什么？](#why-xelatex) |
+| Python + Pygments | 任意 Python 3 | 仅 `minted` 需要；现在可选，一旦增添代码块就必需 |
+
+<a id="why-xelatex"></a>
+
+<details>
+<summary><b>为什么必须用 XeLaTeX，不能用 pdfLaTeX？</b></summary>
+
+<br>
+
+中文版以 `ctex` 的 `fontset=none` 搭配本项目内置的 Noto CJK **OpenType** 字体；
+英文版则用 `fontspec` 与 `unicode-math` 调用 Latin Modern。这些都需要支持 OpenType
+的 Unicode 引擎，所以仓库只提供 XeLaTeX 的 recipe。改成 pdfLaTeX 是编不过的。
+
+</details>
+
+---
+
+## 🏗 编译
+
+### VS Code —— 开箱即用
+
+`.vscode/settings.json` 已随仓库提交，recipe 已经配好。
+
+| 操作 | 快捷键 |
+| --- | --- |
+| 编译 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>B</kbd> |
+| 查看 PDF | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd> |
+
+- 默认 recipe：**`xelatex x2 (CJK)`** · 输出目录：`tmp/` · SyncTeX 正反向搜索已启用。
+- magic comment 被刻意**关闭**，因此 `% !TEX program = xelatex` 只是注释说明，不参与构建。
 
 ### 命令行
 
 | Windows | macOS / Linux | 作用 |
 | --- | --- | --- |
 | `.\scripts\build.ps1` | `./scripts/build.sh` | 编译中文版 |
-| `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | 编译两份文档 |
+| `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | 编译两份 |
 | `.\scripts\build.ps1 -Clean` | `./scripts/build.sh --clean` | 先清空 `tmp/` |
-| `.\scripts\build.ps1 -Document AIE3905_Week7_Milestone_Grading_Standard_EN` | `./scripts/build.sh AIE3905_Week7_Milestone_Grading_Standard_EN` | 按文件名编译单份文档 |
+| `.\scripts\build.ps1 -Document <名称>` | `./scripts/build.sh <名称>` | 按文件名编译单份 |
 
-两个脚本都会连跑两遍 XeLaTeX，然后从 `tmp/<文档名>.log` 中统计错误数、过满/欠满盒子数、
-缺字数并汇报；成功时打印生成的 PDF，失败时返回非零退出码。
+<details>
+<summary><b>手动编译</b></summary>
 
-### 手动编译
+<br>
 
 ```powershell
 xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
         -output-directory=./tmp AIE3905_Week7_Milestone_Grading_Standard.tex
 ```
 
-请**连跑两遍**，并把 `-output-directory=./tmp` 保持为一个完整参数。文档中以
-`./figs/...`、`./fonts/...` 相对路径引用资源，所以要始终在仓库根目录下调用 XeLaTeX。
+请**连跑两遍**，把 `-output-directory=./tmp` 保持为一个完整参数，并始终在仓库根目录执行 ——
+文档以 `./figs/...`、`./fonts/...` 相对路径引用资源。
+
+</details>
 
 ---
 
-## 四、宏包依赖清单
+## 📦 宏包依赖
 
-`scripts/setup-miktex.ps1` 与 `scripts/setup-texlive.sh` 安装的就是下表中的包名
-（发行版的打包名，不是 `\usepackage` 的名字）。
+配置脚本安装的是下面这些发行版包名，而不是 `\usepackage` 的名字。
+
+<details open>
+<summary><b>共 21 个宏包</b></summary>
+
+<br>
 
 | `\usepackage` | MiKTeX / TeX Live 包名 | 提供内容 |
 | --- | --- | --- |
 | —（引擎） | `xetex` | `xelatex.exe` |
 | —（引擎） | `l3kernel`、`l3packages` | LaTeX3 编程层 |
-| `array`、`tabularx` | `latex-tools`（TeX Live 为 `tools`） | 标准工具包 |
-| — | `latex-fonts`（TeX Live 为 `fix-cm`） | CM 字体修正 |
+| `array`、`tabularx` | `latex-tools`（`tools`） | 标准工具包 |
+| — | `latex-fonts`（`fix-cm`） | CM 字体修正 |
 | `bookmark` | `bookmark` | PDF 书签驱动 |
 | `fontspec` | `fontspec` | OpenType 字体选择 |
 | `amsmath` | `amsmath` | 数学排版 |
 | `unicode-math` | `unicode-math` | OpenType 数学 |
-| `ctex` | `ctex` | 中文支持（含 `xeCJK`、`zhnumber`） |
+| `ctex` | `ctex` | 中文支持（`xeCJK`、`zhnumber`） |
 | `needspace` | `needspace` | 分页控制 |
 | `geometry` | `geometry` | 页面布局 |
-| `minted` | `minted` | 代码块（依赖 Pygments） |
+| `minted` | `minted` | 代码块 |
 | `xcolor` | `xcolor` | 颜色 |
 | `graphicx` | `graphics` | `\includegraphics` |
 | `titling` | `titling` | 标题块控制 |
@@ -146,68 +219,70 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 | `hyperref` | `hyperref` | 超链接与 PDF 元数据 |
 | —（字体） | `lm`、`lm-math` | Latin Modern OpenType |
 
-MiKTeX 会在编译时自动补齐缺失宏包，所以即使没跑配置脚本通常也能编过；脚本的意义在于
-更快、可离线预装、结果可复现。
+</details>
+
+> MiKTeX 会在编译时按需补齐缺失宏包，所以没跑配置脚本通常也能编过。脚本的意义在于让它
+> **更快、可离线预装、结果可复现**。
 
 ---
 
-## 五、目录结构
+## 📁 目录结构
 
 ```
 CUHKSZ-SAI-LaTeX_Template/
-├── .gitattributes                                行尾与二进制文件规则
-├── .gitignore                                    忽略构建产物与编辑器垃圾
-├── LICENSE                                       MIT 许可全文
-├── README.md                                     英文说明
-├── README.zh-CN.md                               本文件
-├── .vscode/
-│   └── settings.json                             LaTeX Workshop recipe（xelatex x2）
-├── AIE3905_Week7_Milestone_Grading_Standard.tex      中文版
-├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   英文版
+├── AIE3905_Week7_Milestone_Grading_Standard.tex      中文版  (CN)
+├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   英文版  (EN)
 ├── figs/
-│   └── cuhk-sai-logo01.png                       抬头 logo（`\fancyhead` 使用）
-├── fonts/                                        内置 Noto CJK OpenType 字体
-│   ├── LICENSE.txt                               SIL Open Font License 1.1 全文
-│   ├── NotoSerifSC-Regular.otf
-│   ├── NotoSerifSC-Bold.otf
-│   ├── NotoSansSC-Regular.otf
-│   └── NotoSansSC-Bold.otf
+│   └── cuhk-sai-logo01.png                           通栏抬头 logo
+├── fonts/                                            内置 Noto CJK + OFL 许可全文
 ├── scripts/
-│   ├── setup-miktex.ps1                          Windows：装宏包 + Pygments
-│   ├── setup-texlive.sh                          macOS / Linux：同上，走 tlmgr
-│   ├── build.ps1                                 Windows：编译
-│   └── build.sh                                  macOS / Linux：编译
-└── tmp/                                          构建产物（已被 git 忽略）
+│   ├── setup-miktex.ps1  ·  setup-texlive.sh         装宏包 + Pygments
+│   └── build.ps1         ·  build.sh                 编译并汇报结果
+├── .vscode/settings.json                             LaTeX Workshop recipe
+├── .gitattributes · .gitignore · LICENSE             仓库杂项
+└── tmp/                                              构建产物（已忽略）
 ```
 
-字体之所以内置而不在构建时下载，是为了让每台机器上的排版结果完全一致，也便于在无网络
-环境下编译。
+<details>
+<summary><b>为什么要把字体内置进仓库？</b></summary>
+
+<br>
+
+为了让每台机器上的排版结果完全一致 —— 包括没有网络的机器 —— 而不是悄悄回退到某台机器
+上碰巧装了的某个中文字体。代价是 `fonts/` 会给仓库增加约 40 MB。
+
+</details>
 
 ---
 
-## 六、常见修改位置
+## 🎨 常见修改位置
 
-- **页眉** —— 每个文件导言区的 `\fancyhead[C]` 会用整幅 `figs/cuhk-sai-logo01.png`
-  铺满正文宽度。抬头分割线与主标题之间的间距是 `\geometry{...}` 里的 `headsep=8mm`，
-  调大即可把标题往下推。`headheight` 必须不小于 logo 高度（当前 logo 16.6 mm、
-  配置 18.5 mm），否则 `fancyhdr` 会报警告。
-- **中文字体** —— `\setCJKmainfont`（正文）、`\setCJKsansfont`（标题）、
-  `\newCJKfontfamily\zhhei`（中文粗体），均指向 `./fonts/`。
-- **西文字体** —— `\setmainfont{lmroman10-regular.otf}` 使用 MiKTeX / TeX Live
-  自带的 Latin Modern 文件，不来自本仓库。
-- **字号** —— 每个文件顶部的 `\documentclass[11pt]{article}`。
+| 想改什么 | 改哪里 | 备注 |
+| --- | --- | --- |
+| 抬头 logo | `\fancyhead[C]` | 铺满正文宽度 |
+| 抬头与标题间距 | `\geometry{...}` 中的 `headsep=8mm` | 调大即可把标题往下推 |
+| 抬头高度 | `headheight=18.5mm` | 必须 ≥ logo 高度（16.6 mm），否则 `fancyhdr` 报警告 |
+| 中文字体 | `\setCJKmainfont`、`\setCJKsansfont`、`\newCJKfontfamily\zhhei` | 指向 `./fonts/` |
+| 西文字体 | `\setmainfont{lmroman10-regular.otf}` | 来自 TeX 发行版自带文件 |
+| 字号 | `\documentclass[11pt]{article}` | 每个文件顶部 |
 
-请保持中英两份文档同步：英文版逐节对应中文版，内容改动通常两边都要改。
+> 💡 中英两份文档一一对应，内容改动通常**两边都要改**。
 
 ---
 
-## 七、许可
+## 📜 许可
 
-- **模板、脚本与文档** —— MIT 许可，© 2026 Zijin CAI，全文见 [`LICENSE`](./LICENSE)。
-- **Noto Serif SC / Noto Sans SC**（`fonts/`）—— SIL Open Font License 1.1，
-  是独立于 MIT 的另一套许可，MIT 不能覆盖它。全文见
-  [`fonts/LICENSE.txt`](./fonts/LICENSE.txt)。OFL 允许随本仓库一起再分发这 4 个字体
-  文件，前提是许可文本随附、且修改版不得使用保留字体名。
-  上游：<https://github.com/notofonts/noto-cjk>。
-- **香港中文大学（深圳）logo**（`figs/cuhk-sai-logo01.png`）—— 属于校方商标，
-  仅为课程材料用途收录，不受 MIT 许可覆盖；MIT 许可也不授予任何再使用该图片的权利。
+| 范围 | 许可 |
+| --- | --- |
+| 模板、脚本、文档 | **MIT** © 2026 Zijin CAI —— 见 [`LICENSE`](LICENSE) |
+| Noto Serif SC / Noto Sans SC | **SIL OFL 1.1** —— 独立许可，MIT 不能覆盖它 —— 见 [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
+| 港中深抬头图 | 校方商标。仅为课程材料用途收录，**不受** MIT 许可覆盖 |
+
+字体上游：<https://github.com/notofonts/noto-cjk>
+
+---
+
+<div align="center">
+<sub>为香港中文大学（深圳）理工学院而作<br>
+如果这个模板帮你省下了一个下午，一颗 ⭐ 就是最好的回应。</sub>
+</div>
