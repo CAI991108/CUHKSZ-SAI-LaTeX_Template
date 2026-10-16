@@ -4,14 +4,14 @@
 
 # CUHKSZ-SAI LaTeX Template
 
-**A bilingual course-work template for CUHK-Shenzhen — typeset, not tinkered with.**
+**CUHK-Shenzhen School of Artificial Intelligence LaTeX Template**
 
-*中文 / English · XeLaTeX · reproducible · one-command setup*
+*中文 / English · XeLaTeX · one-command setup*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 [![Engine: XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-008080?style=flat-square&logo=latex&logoColor=white)](#-requirements)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-quick-start)
-[![Setup](https://img.shields.io/badge/setup-one%20command-ff6f00?style=flat-square)](#-quick-start)
+[![Setup](https://img.shields.io/badge/setup-build.sh-ff6f00?style=flat-square)](#-quick-start)
 
 [![Build](https://img.shields.io/badge/build-passing-3fb950?style=flat-square)](#-building)
 [![Docs](https://img.shields.io/badge/documents-bilingual-6e40c9?style=flat-square)](#-documents)
@@ -21,30 +21,6 @@
 [简体中文](README.md) · **English**
 
 </div>
-
----
-
-## ✨ Highlights
-
-| | |
-| --- | --- |
-| 🈶 **Bilingual by design** | The Chinese and English documents mirror each other section by section, so one edit propagates predictably. |
-| 📐 **Typeset, not nudged** | Every spacing value is explicit — header height, header separation, table rules, line spacing. Nothing relies on a lucky default. |
-| 🔁 **Reproducible anywhere** | Fonts are vendored and the toolchain is pinned, so a build on your laptop and a build on a lab machine produce the same PDF. |
-| ⚡ **One command** | Clone, run one setup script, build. No manual package hunting, no "which engine was it again?". |
-| 🧾 **Clean output** | Both documents build with **0 errors, 0 over/underfull boxes and 0 missing glyphs** — and the build script tells you when that stops being true. |
-
----
-
-## 📄 Documents
-
-| | Document | Pages | Engine |
-| :-: | --- | :-: | :-: |
-| 中文 | [`AIE3905_Week7_Milestone_Grading_Standard.tex`](AIE3905_Week7_Milestone_Grading_Standard.tex) | `5` | XeLaTeX |
-| EN | [`AIE3905_Week7_Milestone_Grading_Standard_EN.tex`](AIE3905_Week7_Milestone_Grading_Standard_EN.tex) | `6` | XeLaTeX |
-
-> Both are AIE3905 *S03 & S06 — Week 7 Milestone Grading Schema*: a full-width SAI
-> letterhead, a formal ruled grading table and a course footer, A4.
 
 ---
 
@@ -63,12 +39,12 @@
 **2 · Install the packages**
 
 ```powershell
-git clone <repository-url> && cd CUHKSZ-SAI-LaTeX_Template
+git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
 .\scripts\setup-miktex.ps1        # Windows
 ```
 
 ```bash
-git clone <repository-url> && cd CUHKSZ-SAI-LaTeX_Template
+git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
 chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 ```
 
@@ -102,55 +78,16 @@ instead of doing anything destructive.
 
 </details>
 
----
-
-## 🔧 How it fits together
-
-```mermaid
-flowchart LR
-    A([git clone]) --> B["Install TeX<br/><sub>MiKTeX · TeX Live</sub>"]
-    B --> C["setup scripts<br/><sub>packages + Pygments</sub>"]
-    C --> D["build scripts<br/><sub>XeLaTeX ×2</sub>"]
-    D --> E{"0 errors?"}
-    E -- yes --> F([tmp/*.pdf])
-    E -- no --> G["tmp/*.log"]
-    G --> D
-
-    style F fill:#2ea44f,color:#fff,stroke:#1b7f3b
-    style E fill:#fff8c5,stroke:#d4a72c
-```
-
 XeLaTeX runs **twice** so that `hyperref` bookmarks and page labels settle. The build
 script then parses the `.log` for errors, over/underfull boxes and missing characters
 and exits non-zero when the build is not clean — so a broken build cannot pass silently.
 
----
-
-## 🧰 Requirements
-
-| Component | Version | Why |
-| --- | --- | --- |
-| TeX distribution | MiKTeX · TeX Live 2023+ | Provides the engine and packages |
-| Engine | **XeLaTeX** | pdfLaTeX cannot build either document — [why?](#why-xelatex) |
-| Python + Pygments | any Python 3 | Only `minted` needs it; optional today, required the moment you add a code block |
-
-<a id="why-xelatex"></a>
-
-<details>
-<summary><b>Why XeLaTeX and not pdfLaTeX?</b></summary>
-
-<br>
-
 The Chinese document loads `ctex` with `fontset=none` and binds CJK to the vendored
 Noto CJK **OpenType** files; the English document uses `fontspec` and `unicode-math`
 for Latin Modern. All of that needs a Unicode engine with OpenType support, so the
-repository ships a XeLaTeX-only recipe. Changing it to pdfLaTeX will not work.
-
-</details>
+repository ships a XeLaTeX-only recipe.
 
 ---
-
-## 🏗 Building
 
 ### VS Code — zero setup
 
@@ -281,13 +218,5 @@ The trade-off is that `fonts/` adds roughly 40 MB to the repository.
 | --- | --- |
 | Template, scripts, documents | **MIT** © 2026 Zijin CAI — see [`LICENSE`](LICENSE) |
 | Noto Serif SC / Noto Sans SC | **SIL OFL 1.1** — a separate licence MIT does not override — see [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
-| CUHK-Shenzhen letterhead | The university's trademark. Included for course material only; **not** covered by MIT |
 
 Fonts upstream: <https://github.com/notofonts/noto-cjk>
-
----
-
-<div align="center">
-<sub>Built for CUHK-Shenzhen · School of Science and Engineering<br>
-If this template saved you an afternoon, a ⭐ goes a long way.</sub>
-</div>

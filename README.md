@@ -4,14 +4,14 @@
 
 # CUHKSZ-SAI LaTeX 模板
 
-**香港中文大学（深圳）课程作业中英双语 LaTeX 模板 —— 认真排版，不靠手调。**
+**香港中文大学（深圳）人工智能学院 LaTeX 模板**
 
-*中文 / English · XeLaTeX · 结果可复现 · 一条命令装好环境*
+*中文 / English · XeLaTeX · 一键配置环境*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 [![Engine: XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-008080?style=flat-square&logo=latex&logoColor=white)](#-环境依赖)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-快速开始)
-[![Setup](https://img.shields.io/badge/setup-%E4%B8%80%E6%9D%A1%E5%91%BD%E4%BB%A4-ff6f00?style=flat-square)](#-快速开始)
+[![Setup](https://img.shields.io/badge/setup-build.sh-ff6f00?style=flat-square)](#-快速开始)
 
 [![Build](https://img.shields.io/badge/build-passing-3fb950?style=flat-square)](#-编译)
 [![Docs](https://img.shields.io/badge/documents-%E4%B8%AD%E8%8B%B1%E5%8F%8C%E8%AF%AD-6e40c9?style=flat-square)](#-文档)
@@ -21,30 +21,6 @@
 **简体中文** · [English](README.en.md)
 
 </div>
-
----
-
-## ✨ 特色
-
-| | |
-| --- | --- |
-| 🈶 **天生双语** | 中英两份文档逐节一一对应，改一处内容在两边都有可预期的对应关系。 |
-| 📐 **排版而非手调** | 抬头高度、抬头与正文间距、表格线宽、行距，全部是显式数值，不依赖任何「默认值恰好合适」。 |
-| 🔁 **到处都能复现** | 字体随仓库内置、工具链固定，笔记本上和在机房电脑上编出的 PDF 完全一致。 |
-| ⚡ **一条命令** | 克隆 → 跑一次配置脚本 → 编译。不用手动找宏包，不用回忆「当初用的是哪个引擎」。 |
-| 🧾 **干净输出** | 两份文档均编译到 **0 错误、0 过满/欠满盒子、0 缺字**；一旦不再干净，编译脚本会直接报出来。 |
-
----
-
-## 📄 文档
-
-| | 文档 | 页数 | 引擎 |
-| :-: | --- | :-: | :-: |
-| 中文 | [`AIE3905_Week7_Milestone_Grading_Standard.tex`](AIE3905_Week7_Milestone_Grading_Standard.tex) | `5` | XeLaTeX |
-| EN | [`AIE3905_Week7_Milestone_Grading_Standard_EN.tex`](AIE3905_Week7_Milestone_Grading_Standard_EN.tex) | `6` | XeLaTeX |
-
-> 两份均为 AIE3905 *S03 & S06 —— 第七周里程碑评分标准*：通栏 SAI 抬头、
-> 正式全框线评分表、课程页脚，A4 版式。
 
 ---
 
@@ -63,12 +39,12 @@
 **② 安装宏包**
 
 ```powershell
-git clone <仓库地址> && cd CUHKSZ-SAI-LaTeX_Template
+git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
 .\scripts\setup-miktex.ps1        # Windows
 ```
 
 ```bash
-git clone <仓库地址> && cd CUHKSZ-SAI-LaTeX_Template
+git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
 chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 ```
 
@@ -87,7 +63,7 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 </div>
 
 <details>
-<summary><b>配置脚本到底做了什么</b></summary>
+<summary><b>配置脚本执行内容</b></summary>
 
 <br>
 
@@ -101,54 +77,17 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 
 </details>
 
----
-
-## 🔧 整体流程
-
-```mermaid
-flowchart LR
-    A([git clone]) --> B["安装 TeX<br/><sub>MiKTeX · TeX Live</sub>"]
-    B --> C["配置脚本<br/><sub>宏包 + Pygments</sub>"]
-    C --> D["编译脚本<br/><sub>XeLaTeX ×2</sub>"]
-    D --> E{"0 错误?"}
-    E -- 是 --> F([tmp/*.pdf])
-    E -- 否 --> G["tmp/*.log"]
-    G --> D
-
-    style F fill:#2ea44f,color:#fff,stroke:#1b7f3b
-    style E fill:#fff8c5,stroke:#d4a72c
-```
-
 XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。随后编译脚本从 `.log`
 中统计错误数、过满/欠满盒子数与缺字数，不干净时返回非零退出码 ——
 所以坏掉的编译结果不可能悄悄蒙混过关。
 
----
-
-## 🧰 环境依赖
-
-| 组件 | 版本 | 作用 |
-| --- | --- | --- |
-| TeX 发行版 | MiKTeX · TeX Live 2023+ | 提供引擎与宏包 |
-| 编译引擎 | **XeLaTeX** | pdfLaTeX 无法编译这两份文档 —— [为什么？](#why-xelatex) |
-| Python + Pygments | 任意 Python 3 | 仅 `minted` 需要；现在可选，一旦增添代码块就必需 |
-
-<a id="why-xelatex"></a>
-
-<details>
-<summary><b>为什么必须用 XeLaTeX，不能用 pdfLaTeX？</b></summary>
-
-<br>
-
 中文版以 `ctex` 的 `fontset=none` 搭配本项目内置的 Noto CJK **OpenType** 字体；
 英文版则用 `fontspec` 与 `unicode-math` 调用 Latin Modern。这些都需要支持 OpenType
-的 Unicode 引擎，所以仓库只提供 XeLaTeX 的 recipe。改成 pdfLaTeX 是编不过的。
+的 Unicode 引擎，所以仓库只提供 XeLaTeX 的 recipe。
 
 </details>
 
 ---
-
-## 🏗 编译
 
 ### VS Code —— 开箱即用
 
@@ -221,7 +160,7 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 
 </details>
 
-> MiKTeX 会在编译时按需补齐缺失宏包，所以没跑配置脚本通常也能编过。脚本的意义在于让它
+> MiKTeX 会在编译时按需补齐缺失宏包，所以没跑配置脚本通常也能编过。脚本在于
 > **更快、可离线预装、结果可复现**。
 
 ---
@@ -248,8 +187,8 @@ CUHKSZ-SAI-LaTeX_Template/
 
 <br>
 
-为了让每台机器上的排版结果完全一致 —— 包括没有网络的机器 —— 而不是悄悄回退到某台机器
-上碰巧装了的某个中文字体。代价是 `fonts/` 会给仓库增加约 40 MB。
+为了让每台电脑上的排版结果完全一致 —— 包括没有网络的机器 —— 而不是回退到某台机器
+上碰巧装了的某个中文字体。因此是 `fonts/` 会给仓库增加约 40 MB。
 
 </details>
 
@@ -276,13 +215,6 @@ CUHKSZ-SAI-LaTeX_Template/
 | --- | --- |
 | 模板、脚本、文档 | **MIT** © 2026 Zijin CAI —— 见 [`LICENSE`](LICENSE) |
 | Noto Serif SC / Noto Sans SC | **SIL OFL 1.1** —— 独立许可，MIT 不能覆盖它 —— 见 [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
-| 港中深抬头图 | 校方商标。仅为课程材料用途收录，**不受** MIT 许可覆盖 |
 
 字体上游：<https://github.com/notofonts/noto-cjk>
 
----
-
-<div align="center">
-<sub>为香港中文大学（深圳）理工学院而作<br>
-如果这个模板帮你省下了一个下午，一颗 ⭐ 就是最好的回应。</sub>
-</div>
