@@ -24,7 +24,8 @@ fail()  { printf '    \033[31mFAIL\033[0m  %s\n' "$1"; }
 # ---------------------------------------------------------------------------
 #  TeX Live package names.  tlmgr resolves dependencies itself, so only the
 #  directly \usepackage'd packages (plus the font packages) are listed.
-#  tools -> array.sty + tabularx.sty, graphics -> graphicx.sty,
+#  tools -> array.sty + tabularx.sty, xltabular -> longtable + tabularx
+#  (tables that break across pages), graphics -> graphicx.sty,
 #  lm / lm-math -> the OpenType Latin Modern fonts, ctex -> xeCJK + zhnumber.
 # ---------------------------------------------------------------------------
 PACKAGES=(
@@ -32,6 +33,7 @@ PACKAGES=(
   l3kernel
   l3packages
   tools
+  xltabular
   fix-cm
   bookmark
   fontspec
