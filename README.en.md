@@ -109,6 +109,12 @@ repository ships a XeLaTeX-only recipe.
 | `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | Build both |
 | `.\scripts\build.ps1 -Clean` | `./scripts/build.sh --clean` | Empty `tmp/` first |
 | `.\scripts\build.ps1 -Document <name>` | `./scripts/build.sh <name>` | Build one document by base name |
+| `.\scripts\build.cmd` | — | Same as `build.ps1`, identical flags (see note below) |
+
+> 💡 On Windows, PowerShell can refuse to run the unsigned `.ps1` files in this
+> repository ("not digitally signed"). Use `scripts\setup.cmd` / `scripts\build.cmd`
+> instead: they call the same scripts with `-ExecutionPolicy Bypass`, take the same
+> flags, and leave the machine-wide policy untouched.
 
 <details>
 <summary><b>Building by hand</b></summary>
