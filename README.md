@@ -109,6 +109,11 @@ XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。�
 | `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | 编译两份 |
 | `.\scripts\build.ps1 -Clean` | `./scripts/build.sh --clean` | 先清空 `tmp/` |
 | `.\scripts\build.ps1 -Document <名称>` | `./scripts/build.sh <名称>` | 按文件名编译单份 |
+| `.\scripts\build.cmd` | — | 同 `build.ps1`，参数一致（见下方说明） |
+
+> 💡 Windows 上 PowerShell 可能以「未数字签名」为由拒绝执行仓库里的 `.ps1`。
+> 此时改用 `scripts\setup.cmd` / `scripts\build.cmd`：它们只是以
+> `-ExecutionPolicy Bypass` 调用同名脚本，参数完全相同，且不改动系统级策略。
 
 <details>
 <summary><b>手动编译</b></summary>

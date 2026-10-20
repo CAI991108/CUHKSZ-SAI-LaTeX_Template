@@ -5,6 +5,9 @@
 # fails with "bad interpreter: /usr/bin/env: No such file or directory".
 *.sh text eol=lf
 
+# Batch files are executed by cmd.exe, which wants CRLF.
+*.cmd text eol=crlf
+
 # The vendored font licence is kept byte-identical to the upstream file.
 fonts/LICENSE.txt text eol=lf
 
