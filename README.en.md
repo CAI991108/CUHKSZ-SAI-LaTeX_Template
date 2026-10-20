@@ -68,7 +68,7 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 <br>
 
 - Locate `xelatex` and fail loudly with install instructions when it is missing.
-- Install all 21 LaTeX packages the documents need, probing `miktex packages info`
+- Install all 22 LaTeX packages the documents need, probing `miktex packages info`
   first because MiKTeX treats re-installing an existing package as an error.
 - Check `pygmentize` and install Pygments through `pip` when it is absent.
 - Verify the vendored fonts, the letterhead and `fonts/LICENSE.txt` are present.
@@ -140,7 +140,7 @@ The setup scripts install these distribution package names — not the `\usepack
 names.
 
 <details open>
-<summary><b>21 packages</b></summary>
+<summary><b>22 packages</b></summary>
 
 <br>
 
@@ -155,6 +155,7 @@ names.
 | `amsmath` | `amsmath` | Math typesetting |
 | `unicode-math` | `unicode-math` | OpenType math |
 | `ctex` | `ctex` | CJK support (`xeCJK`, `zhnumber`) |
+| `xltabular` | `xltabular` | Tables that break across pages, header repeated |
 | `needspace` | `needspace` | Page-break control |
 | `geometry` | `geometry` | Page layout |
 | `minted` | `minted` | Code listings |
@@ -179,6 +180,8 @@ names.
 CUHKSZ-SAI-LaTeX_Template/
 ├── AIE3905_Week7_Milestone_Grading_Standard.tex      Chinese document  (CN)
 ├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   English document  (EN)
+├── docs/
+│   └── xelatex-notes.md                           XeLaTeX pitfalls and verification
 ├── figs/
 │   └── cuhk-sai-logo01.png                           full-width letterhead
 ├── fonts/                                            vendored Noto CJK + OFL text

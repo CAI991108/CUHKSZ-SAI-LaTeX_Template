@@ -111,7 +111,11 @@ try {
 
         if (Test-Path -LiteralPath $log) {
             $logText = [System.IO.File]::ReadAllText($log, [System.Text.Encoding]::UTF8)
-            $errors   = ([regex]'\.tex:\d+:').Matches($logText).Count
+            # "ignored error:" marks a TeX error that LaTeX recovered from.  longtable
+            # emits one when it splits a table across a page boundary and the output is
+            # unaffected, so those lines are excluded and the gate keeps catching real
+            # failures.
+            $errors   = ([regex]'\.tex:\d+:(?! ignored error:)').Matches($logText).Count
             $overfull = ([regex]'(Overfull|Underfull)').Matches($logText).Count
             $missing  = ([regex]'Missing character').Matches($logText).Count
 

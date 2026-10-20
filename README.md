@@ -68,7 +68,7 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 <br>
 
 - 定位 `xelatex`，找不到时给出安装指引并明确报错。
-- 安装两份文档需要的全部 21 个 LaTeX 宏包；先用 `miktex packages info` 探测，
+- 安装两份文档需要的 22 个 LaTeX 宏包；先用 `miktex packages info` 探测，
   因为 MiKTeX 会把「重复安装已装包」当作错误。
 - 检查 `pygmentize`，缺失时用 `pip` 安装 Pygments。
 - 校验内置字体、抬头图与 `fonts/LICENSE.txt` 是否齐全。
@@ -137,7 +137,7 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 配置脚本安装的是下面这些发行版包名，而不是 `\usepackage` 的名字。
 
 <details open>
-<summary><b>共 21 个宏包</b></summary>
+<summary><b>共 22 个宏包</b></summary>
 
 <br>
 
@@ -152,6 +152,7 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 | `amsmath` | `amsmath` | 数学排版 |
 | `unicode-math` | `unicode-math` | OpenType 数学 |
 | `ctex` | `ctex` | 中文支持（`xeCJK`、`zhnumber`） |
+| `xltabular` | `xltabular` | 跨页续排的表格（表头自动重复） |
 | `needspace` | `needspace` | 分页控制 |
 | `geometry` | `geometry` | 页面布局 |
 | `minted` | `minted` | 代码块 |
@@ -176,6 +177,8 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 CUHKSZ-SAI-LaTeX_Template/
 ├── AIE3905_Week7_Milestone_Grading_Standard.tex      中文版  (CN)
 ├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   英文版  (EN)
+├── docs/
+│   └── xelatex-notes.md                           踩坑与验证清单
 ├── figs/
 │   └── cuhk-sai-logo01.png                           通栏抬头 logo
 ├── fonts/                                            内置 Noto CJK + OFL 许可全文

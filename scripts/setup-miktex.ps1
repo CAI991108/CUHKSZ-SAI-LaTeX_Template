@@ -34,7 +34,8 @@ function Write-Fail { param([string]$Text) Write-Host "    FAIL  $Text" -Foregro
 #  MiKTeX package IDs.
 #  MiKTeX resolves transitive dependencies on its own, so only the directly
 #  \usepackage'd packages (plus the two font packages) are listed here.
-#  latex-tools -> array.sty + tabularx.sty, graphics -> graphicx.sty,
+#  latex-tools -> array.sty + tabularx.sty, xltabular -> longtable + tabularx
+#  (tables that break across pages), graphics -> graphicx.sty,
 #  lm / lm-math -> the OpenType Latin Modern fonts, ctex -> xeCJK + zhnumber.
 # ---------------------------------------------------------------------------
 $packages = @(
@@ -42,6 +43,7 @@ $packages = @(
     'l3kernel',
     'l3packages',
     'latex-tools',
+    'xltabular',
     'latex-fonts',
     'bookmark',
     'fontspec',
