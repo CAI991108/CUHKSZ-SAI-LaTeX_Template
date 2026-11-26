@@ -154,10 +154,10 @@ do
   fi
 done
 
-if [ -f "${ROOT}/figs/cuhk-sai-logo01.png" ]; then
-  ok 'figs/cuhk-sai-logo01.png'
+if [ -f "${ROOT}/assets/sai-letterhead.png" ]; then
+  ok 'assets/sai-letterhead.png'
 else
-  note 'figs/cuhk-sai-logo01.png is missing.'
+  note 'assets/sai-letterhead.png is missing.'
   note 'Add the letterhead back, or set \\SAIReportLogo{} and load the style with [nologo].'
 fi
 

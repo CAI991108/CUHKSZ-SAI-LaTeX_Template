@@ -1,5 +1,8 @@
 # Figures
 
+The letterhead lives in `../assets/`; report figures live here. The example figure is
+part of the template and is covered by the MIT licence (see `../NOTICE.md`).
+
 `example-figure.pdf` is the pipeline figure used by the example report. Its source is
 `example-figure.tex`; regenerate it with:
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="figs/cuhk-sai-logo01.png" alt="香港中文大学（深圳）· 人工智能学院" width="100%">
+<img src="assets/sai-letterhead.png" alt="香港中文大学（深圳）· 人工智能学院" width="100%">
 
 # SAI 报告 LaTeX 模板
 
@@ -146,7 +146,7 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 ├── figures/                            # 示例图（含可重生成的 TikZ 源）
 ├── references.bib                      # biblatex / biber
 ├── docs/xelatex-notes.md               # XeLaTeX 踩坑与验证清单
-├── figs/cuhk-sai-logo01.png            # 学院抬头 logo
+├── assets/sai-letterhead.png           # 学院抬头 logo
 ├── fonts/                              # 内置 Noto CJK + OFL 许可全文
 ├── scripts/
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # 装宏包 + Pygments
@@ -196,11 +196,11 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 | 模板、脚本、文档 | **MIT** © 2026 Zijin CAI and contributors，见 [`LICENSE`](LICENSE) |
 | Noto Serif SC / Noto Sans SC | **SIL OFL 1.1**，见 [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
 | Latin Modern | TeX 发行版自带，GUST 字体许可 |
-| 学院抬头 logo | **不覆盖** MIT；仅用于 SAI 课程/成员文档，见 [`figs/README.md`](figs/README.md) |
+| 学院抬头 logo | **不覆盖** MIT；仅用于 SAI 课程/成员文档，见 [`assets/README.md`](assets/README.md) |
 
 字体上游：<https://github.com/notofonts/noto-cjk>。
 
-**替换 logo：** 把 `figs/cuhk-sai-logo01.png` 换成自己的抬头图，保持
+**替换 logo：** 把 `assets/sai-letterhead.png` 换成自己的抬头图，保持
 `metadata.tex` 的 `\SAIReportLogo` 指向它；如果不想用抬头图，设置
 `\SAIReportLogo{}`，并用 `\usepackage[nologo]{styles/sai-report}` 加载样式。
 公开模板里不要放未授权的合作方 logo、真实学生数据或课程内部政策。
@@ -214,7 +214,7 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
 课程报告要用模板时，有两个做法：
 
 1. 复制整个 `templates/sai-report/` 到自己的目录，再改 `metadata.tex` 与 `sections/`；
-2. 在自己的文档里把 `\SAIAssetRoot` 指向模板的 `fonts/` 与 `figs/`，并
+2. 在自己的文档里把 `\SAIAssetRoot` 指向模板的 `fonts/` 与 `assets/`，并
    `\usepackage[...]{.../styles/sai-report}`，只维护自己的正文。
 
 ## 故障排查
@@ -245,12 +245,12 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
 
 模板代码与文档使用 MIT；内置字体的许可是独立的 SIL OFL 1.1；学院 logo 不在 MIT 范围内。
 完整说明见 [`LICENSE`](LICENSE)、[`fonts/LICENSE.txt`](fonts/LICENSE.txt)、
-[`NOTICE.md`](NOTICE.md) 与 [`figs/README.md`](figs/README.md)。
+[`NOTICE.md`](NOTICE.md) 与 [`assets/README.md`](assets/README.md)。
 
 ## 相关文档
 
 - [`PROVENANCE.md`](PROVENANCE.md) — 从独立模板仓库迁入的来源与维护关系
 - [`NOTICE.md`](NOTICE.md) — 字体、logo 与第三方资源的许可说明
-- [`figs/README.md`](figs/README.md) — 抬头图的使用边界与替换方式
+- [`assets/README.md`](assets/README.md) — 抬头图的使用边界与替换方式
 - [`docs/xelatex-notes.md`](docs/xelatex-notes.md) — XeLaTeX 踩坑与验证清单
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — 发布前检查清单

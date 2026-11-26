@@ -200,11 +200,11 @@ foreach ($asset in $assets) {
     }
 }
 
-if (Test-Path -LiteralPath (Join-Path $repoRoot 'figs\cuhk-sai-logo01.png')) {
-    Write-Pass 'figs\cuhk-sai-logo01.png'
+if (Test-Path -LiteralPath (Join-Path $repoRoot 'assets\sai-letterhead.png')) {
+    Write-Pass 'assets\sai-letterhead.png'
 }
 else {
-    Write-Note 'figs\cuhk-sai-logo01.png is missing.'
+    Write-Note 'assets\sai-letterhead.png is missing.'
     Write-Note 'Add the letterhead back, or set \SAIReportLogo{} and load the style with [nologo].'
 }
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="figs/cuhk-sai-logo01.png" alt="CUHK-Shenzhen · School of Artificial Intelligence" width="100%">
+<img src="assets/sai-letterhead.png" alt="CUHK-Shenzhen · School of Artificial Intelligence" width="100%">
 
 # SAI Report LaTeX Template
 
@@ -152,7 +152,7 @@ templates/sai-report/                   # the repository root in the public mirr
 ├── figures/                            # example figure (with regenerable TikZ source)
 ├── references.bib                      # biblatex / biber
 ├── docs/xelatex-notes.md               # XeLaTeX pitfalls and verification checklist
-├── figs/cuhk-sai-logo01.png            # SAI letterhead
+├── assets/sai-letterhead.png           # SAI letterhead
 ├── fonts/                              # vendored Noto CJK + the OFL licence
 ├── scripts/
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # packages + Pygments
@@ -206,7 +206,7 @@ templates/sai-report/                   # the repository root in the public mirr
 | Template, scripts, documentation | **MIT** © 2026 Zijin CAI and contributors, see [`LICENSE`](LICENSE) |
 | Noto Serif SC / Noto Sans SC | **SIL OFL 1.1**, see [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
 | Latin Modern | shipped with TeX Live, GUST font licence |
-| SAI letterhead | **not** covered by MIT; for SAI course/member documents only, see [`figs/README.md`](figs/README.md) |
+| SAI letterhead | **not** covered by MIT; for SAI course/member documents only, see [`assets/README.md`](assets/README.md) |
 
 Font upstream: <https://github.com/notofonts/noto-cjk>.
 
@@ -228,7 +228,7 @@ To use the template for a course report, either:
 1. copy the whole `templates/sai-report/` directory and edit `metadata.tex` and
    `sections/`; or
 2. keep your own document and point `\SAIAssetRoot` at the template's `fonts/` and
-   `figs/`, then `\usepackage[...]{.../styles/sai-report}`.
+   `assets/`, then `\usepackage[...]{.../styles/sai-report}`.
 
 ## Troubleshooting
 
@@ -261,12 +261,12 @@ To use the template for a course report, either:
 The template code and documentation are MIT; the vendored fonts are under SIL OFL 1.1;
 the SAI letterhead is outside the MIT grant. See [`LICENSE`](LICENSE),
 [`fonts/LICENSE.txt`](fonts/LICENSE.txt), [`NOTICE.md`](NOTICE.md) and
-[`figs/README.md`](figs/README.md).
+[`assets/README.md`](assets/README.md).
 
 ## Related documents
 
 - [`PROVENANCE.md`](PROVENANCE.md) — where the template came from and how it is maintained
 - [`NOTICE.md`](NOTICE.md) — fonts, logo and third-party asset licences
-- [`figs/README.md`](figs/README.md) — letterhead usage boundary and replacement
+- [`assets/README.md`](assets/README.md) — letterhead usage boundary and replacement
 - [`docs/xelatex-notes.md`](docs/xelatex-notes.md) — XeLaTeX pitfalls and verification checklist
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — pre-release checklist

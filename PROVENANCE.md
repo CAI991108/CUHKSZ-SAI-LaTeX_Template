@@ -33,4 +33,4 @@ repository is a **release mirror**: it is updated from this directory with
 - Noto Serif SC / Noto Sans SC fonts: SIL Open Font License 1.1, see
   [`fonts/LICENSE.txt`](fonts/LICENSE.txt).
 - The university letterhead image is **not** covered by the MIT licence; see
-  [`figs/README.md`](figs/README.md) for its usage boundary and how to replace it.
+  [`assets/README.md`](assets/README.md) for its usage boundary and how to replace it.
