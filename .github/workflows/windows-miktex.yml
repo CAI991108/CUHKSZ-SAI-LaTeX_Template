@@ -48,6 +48,16 @@ jobs:
           }
           & $init --show-config-value=[MPM]AutoInstall
 
+      - name: Show the MiKTeX environment
+        shell: pwsh
+        run: |
+          $bin = Join-Path $env:ProgramFiles 'MiKTeX\miktex\bin\x64'
+          & (Join-Path $bin 'xelatex.exe') --version | Select-Object -First 1
+          foreach ($tool in 'latexminted.exe', 'biber.exe', 'miktex.exe') {
+            $path = Join-Path $bin $tool
+            "{0,-16} {1}" -f $tool, $(if (Test-Path -LiteralPath $path) { 'present' } else { 'MISSING' })
+          }
+
       - name: Install packages and Pygments
         shell: cmd
         run: scripts\setup.cmd

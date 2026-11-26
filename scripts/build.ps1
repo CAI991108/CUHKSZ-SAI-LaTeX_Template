@@ -68,13 +68,27 @@ function Resolve-Tool {
 
 $searchDirs = @()
 foreach ($base in @($env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)})) {
-    if ($base) { $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64') }
+    if ($base) {
+        # A user-scope MiKTeX installs under %LOCALAPPDATA%\Programs; a
+        # machine-wide one under %ProgramFiles%.
+        $searchDirs += (Join-Path $base 'Programs\MiKTeX\miktex\bin\x64')
+        $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64')
+    }
 }
 
 $xelatex = Resolve-Tool 'xelatex.exe' $searchDirs
 if (-not $xelatex) {
     Write-Host 'xelatex was not found.  Run .\scripts\setup-miktex.ps1 first.' -ForegroundColor Red
     exit 1
+}
+
+# xelatex runs minted's helper (latexminted) through the shell, which resolves
+# it on PATH.  When MiKTeX is installed but its bin directory is not on PATH -
+# a fresh install, a CI runner, or a profile that never reloaded - finding
+# xelatex by absolute path is not enough.
+$miktexBin = Split-Path -Parent $xelatex
+if ($env:PATH -notlike "*$miktexBin*") {
+    $env:PATH = "$miktexBin;$env:PATH"
 }
 
 $biber = Resolve-Tool 'biber.exe' $searchDirs

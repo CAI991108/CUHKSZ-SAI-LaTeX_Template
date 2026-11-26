@@ -99,7 +99,12 @@ $packages = @(
 # ---------------------------------------------------------------------------
 $searchDirs = @()
 foreach ($base in @($env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)})) {
-    if ($base) { $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64') }
+    if ($base) {
+        # A user-scope MiKTeX installs under %LOCALAPPDATA%\Programs; a
+        # machine-wide one under %ProgramFiles%.
+        $searchDirs += (Join-Path $base 'Programs\MiKTeX\miktex\bin\x64')
+        $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64')
+    }
 }
 
 function Resolve-Tool {
@@ -123,9 +128,16 @@ if (-not $xelatex) {
     Write-Host '    or download it from https://miktex.org/download'
     exit 1
 }
+$binDir = Split-Path -Parent $xelatex
 Write-Pass "xelatex : $xelatex"
 
-$binDir = Split-Path -Parent $xelatex
+# Put the MiKTeX bin directory on PATH for the rest of the session.  TeX itself
+# invokes helpers through the shell (minted calls latexminted), and a freshly
+# installed MiKTeX has not necessarily updated the caller's PATH yet.
+if ($env:PATH -notlike "*$binDir*") {
+    $env:PATH = "$binDir;$env:PATH"
+}
+
 $miktex = Join-Path $binDir 'miktex.exe'
 $mpm    = Join-Path $binDir 'mpm.exe'
 
