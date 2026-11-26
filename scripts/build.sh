@@ -127,6 +127,11 @@ if [ "${CLEAN}" -eq 1 ]; then
 fi
 mkdir -p "${OUTDIR}"
 
+# minted v3 asks Pygments for the output directory through TEXMF_OUTPUT_DIRECTORY.
+# TeX Live 2024+ derives it from -output-directory; MiKTeX does not, so without
+# this line every minted block fails with "could not find output directory".
+export TEXMF_OUTPUT_DIRECTORY="${OUTDIR}"
+
 FAILURES=0
 BUILT=0
 
