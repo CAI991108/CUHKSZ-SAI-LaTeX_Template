@@ -174,21 +174,26 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 ## 📁 目录结构
 
 ```
-CUHKSZ-SAI-LaTeX_Template/
-├── AIE3905_Week7_Milestone_Grading_Standard.tex      中文版  (CN)
-├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   英文版  (EN)
+templates/sai-report/
+├── main-zh.tex · main-en.tex                      中英报告入口（重建中）
+├── styles/sai-report.sty                          共享样式（重建中）
+├── sections/                                      正文章节（重建中）
 ├── docs/
 │   └── xelatex-notes.md                           踩坑与验证清单
 ├── figs/
-│   └── cuhk-sai-logo01.png                           通栏抬头 logo
-├── fonts/                                            内置 Noto CJK + OFL 许可全文
+│   └── cuhk-sai-logo01.png                        通栏抬头 logo
+├── fonts/                                         内置 Noto CJK + OFL 许可全文
 ├── scripts/
-│   ├── setup-miktex.ps1  ·  setup-texlive.sh         装宏包 + Pygments
-│   └── build.ps1         ·  build.sh                 编译并汇报结果
-├── .vscode/settings.json                             LaTeX Workshop recipe
-├── .gitattributes · .gitignore · LICENSE             仓库杂项
-└── tmp/                                              构建产物（已忽略）
+│   ├── setup-miktex.ps1  ·  setup-texlive.sh      装宏包 + Pygments
+│   └── build.ps1         ·  build.sh              编译并汇报结果
+├── .vscode/settings.json                          LaTeX Workshop recipe
+├── .gitattributes · .gitignore · LICENSE          仓库杂项
+└── tmp/                                           构建产物（已忽略）
 ```
+
+> 课程专用的 AIE3905 Week 7 评分细则已迁到本仓库
+> [`docs/guidance/latex/week7-milestone/`](../../docs/guidance/latex/week7-milestone/)，
+> 不再属于模板。模板自己的入口、样式与章节正在重建（见本仓库 map #1）。
 
 <details>
 <summary><b>为什么要把字体内置进仓库？</b></summary>
