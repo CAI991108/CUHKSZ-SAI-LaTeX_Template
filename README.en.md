@@ -1,20 +1,16 @@
 <div align="center">
 
-<img src="figs/cuhk-sai-logo01.png" alt="CUHK-Shenzhen · School of Science and Engineering" width="100%">
+<img src="figs/cuhk-sai-logo01.png" alt="CUHK-Shenzhen · School of Artificial Intelligence" width="100%">
 
-# CUHKSZ-SAI LaTeX Template
+# SAI Report LaTeX Template
 
-**CUHK-Shenzhen School of Artificial Intelligence LaTeX Template**
+**CUHK-Shenzhen School of Artificial Intelligence · Bilingual report template**
 
-*中文 / English · XeLaTeX · one-command setup*
+*中文 / English · XeLaTeX · reproducible build · figure / table / code / citation / appendix examples*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
-[![Engine: XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-008080?style=flat-square&logo=latex&logoColor=white)](#-requirements)
+[![Engine: XeLaTeX](https://img.shields.io/badge/engine-XeLaTeX-008080?style=flat-square&logo=latex&logoColor=white)](#-quick-start)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-quick-start)
-[![Setup](https://img.shields.io/badge/setup-build.sh-ff6f00?style=flat-square)](#-quick-start)
-
-[![Build](https://img.shields.io/badge/build-passing-3fb950?style=flat-square)](#-building)
-[![Docs](https://img.shields.io/badge/documents-bilingual-6e40c9?style=flat-square)](#-documents)
 [![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20vendored-c2185b?style=flat-square)](fonts/LICENSE.txt)
 [![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
 
@@ -24,9 +20,48 @@
 
 ---
 
-## 🚀 Quick start
+## What this is
 
-**1 · Install a TeX distribution**
+A bilingual LaTeX template for **SAI reports**. It provides:
+
+- two entry points, `main-zh.tex` (Chinese) and `main-en.tex` (English), sharing one
+  `styles/sai-report.sty`;
+- one `metadata.tex` for the title, subtitle, author, student ID, course, instructor,
+  date, logo and keywords;
+- a compilable example report: abstract, table of contents, seven sections, a figure,
+  tables, a long table, code, citations and an appendix;
+- build tooling: environment setup, entry-point discovery, biber, a log gate and a
+  bilingual parity check;
+- vendored Noto CJK fonts, so a clean clone builds offline.
+
+**What it is not:**
+
+- not the AIE3905 rubric, grading policy or course material;
+- not a thesis or dissertation class;
+- not a submit-as-is report: replace the example prose with your own.
+
+## Quick start
+
+### 1 · Get the template
+
+Course members (**source repository**, template lives in a subdirectory):
+
+```bash
+git clone https://github.com/CAI991108/AIE3905-Criteria.git
+cd AIE3905-Criteria/templates/sai-report
+```
+
+External users (**release mirror**, from v1.0):
+
+```bash
+git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git
+cd CUHKSZ-SAI-LaTeX_Template
+```
+
+> The source lives at `AIE3905-Criteria/templates/sai-report/`; the public repository
+> is a release mirror pushed from the source (see [`PROVENANCE.md`](PROVENANCE.md)).
+
+### 2 · Install a TeX distribution
 
 | Platform | Command |
 | --- | --- |
@@ -36,196 +71,202 @@
 | Fedora | `sudo dnf install texlive-scheme-full` |
 | Arch | `sudo pacman -S texlive-most texlive-langchinese` |
 
-**2 · Install the packages**
+### 3 · Install packages and Pygments
+
+Windows:
 
 ```powershell
-git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
-.\scripts\setup-miktex.ps1        # Windows
+.\scripts\setup-miktex.ps1
+# or, when the execution policy blocks .ps1 files:
+.\scripts\setup.cmd
 ```
+
+macOS / Linux:
 
 ```bash
-git clone https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template.git && cd CUHKSZ-SAI-LaTeX_Template
-chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
+chmod +x scripts/*.sh
+./scripts/setup-texlive.sh
 ```
 
-**3 · Build**
+> Skip this step if your distribution already has `xelatex`, `ctex`, `minted`,
+> `biblatex` and `biber`. Both scripts are idempotent and only add what is missing.
 
-```powershell
-.\scripts\build.ps1 -All          # Windows
-```
+### 4 · Build
 
 ```bash
 ./scripts/build.sh --all          # macOS / Linux
+.\scripts\build.ps1 -All          # Windows
 ```
 
-<div align="center">
-<sub>PDFs land in <code>tmp/</code> — <b>no configuration, no questions asked.</b></sub>
-</div>
+The PDFs are written to `tmp/main-zh.pdf` and `tmp/main-en.pdf`.
 
-<details>
-<summary><b>What the setup scripts actually do</b></summary>
+- The default builds every `main-*.tex`; `--doc main-en` builds one; `--clean` empties
+  the output directory first; `--outdir build` writes elsewhere.
+- When a document has a bibliography, the script runs `biber` after the first pass and
+  then adds two XeLaTeX passes.
+- Log gate: any non-zero count of errors, `Overfull`/`Underfull` boxes or
+  `Missing character` fails the build. `ignored error:` lines (the known longtable
+  page-split recovery message) are excluded.
 
-<br>
+VS Code: open **`templates/sai-report`** as the workspace. The default recipe is
+`latexmk (xelatex + biber)` and writes to `tmp/`. If you open the repository root, the
+template's `.vscode/settings.json` does not apply.
 
-- Locate `xelatex` and fail loudly with install instructions when it is missing.
-- Install all 22 LaTeX packages the documents need, probing `miktex packages info`
-  first because MiKTeX treats re-installing an existing package as an error.
-- Check `pygmentize` and install Pygments through `pip` when it is absent.
-- Verify the vendored fonts, the letterhead and `fonts/LICENSE.txt` are present.
+## What to edit first
 
-Both scripts are **idempotent** — re-running them reports what is already in place
-instead of doing anything destructive.
-
-</details>
-
-XeLaTeX runs **twice** so that `hyperref` bookmarks and page labels settle. The build
-script then parses the `.log` for errors, over/underfull boxes and missing characters
-and exits non-zero when the build is not clean — so a broken build cannot pass silently.
-
-The Chinese document loads `ctex` with `fontset=none` and binds CJK to the vendored
-Noto CJK **OpenType** files; the English document uses `fontspec` and `unicode-math`
-for Latin Modern. All of that needs a Unicode engine with OpenType support, so the
-repository ships a XeLaTeX-only recipe.
-
----
-
-### VS Code — zero setup
-
-`.vscode/settings.json` is committed with the recipe already wired up.
-
-| Action | Shortcut |
+| Change | File |
 | --- | --- |
-| Build | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>B</kbd> |
-| View PDF | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd> |
+| Title, subtitle, author, student ID, course, instructor, date, logo, keywords | [`metadata.tex`](metadata.tex) (ZH/EN blocks) |
+| Abstract | `frontmatter/zh/abstract.tex` / `frontmatter/en/abstract.tex` |
+| Section prose | `sections/zh/*.tex` / `sections/en/*.tex` |
+| Add or remove sections | the `\input` lines in `main-zh.tex` / `main-en.tex` |
+| Tables | `tables/zh/*.tex` / `tables/en/*.tex` |
+| Code | `code/*.py`, included with `\inputminted` |
+| Figures | `figures/`, included with `\includegraphics` |
+| References | [`references.bib`](references.bib) |
+| Page, header, footer, fonts | [`styles/sai-report.sty`](styles/sai-report.sty) (advanced; most reports never touch it) |
 
-- Default recipe: **`xelatex x2 (CJK)`** · output: `tmp/` · SyncTeX forward + inverse search enabled.
-- Magic comments are deliberately **off**, so `% !TEX program = xelatex` is documentation rather than a setting.
+For a first report, usually only the fields in `metadata.tex` and the example prose in
+`sections/` need to change. **Do not** edit the title, author or course inside
+`styles/sai-report.sty`; those belong to `metadata.tex`.
 
-### Command line
-
-| Windows | macOS / Linux | Effect |
-| --- | --- | --- |
-| `.\scripts\build.ps1` | `./scripts/build.sh` | Build the Chinese document |
-| `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | Build both |
-| `.\scripts\build.ps1 -Clean` | `./scripts/build.sh --clean` | Empty `tmp/` first |
-| `.\scripts\build.ps1 -Document <name>` | `./scripts/build.sh <name>` | Build one document by base name |
-| `.\scripts\build.cmd` | — | Same as `build.ps1`, identical flags (see note below) |
-
-> 💡 On Windows, PowerShell can refuse to run the unsigned `.ps1` files in this
-> repository ("not digitally signed"). Use `scripts\setup.cmd` / `scripts\build.cmd`
-> instead: they call the same scripts with `-ExecutionPolicy Bypass`, take the same
-> flags, and leave the machine-wide policy untouched.
-
-<details>
-<summary><b>Building by hand</b></summary>
-
-<br>
-
-```powershell
-xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
-        -output-directory=./tmp AIE3905_Week7_Milestone_Grading_Standard.tex
-```
-
-Run it **twice**, keep `-output-directory=./tmp` as a single token, and always invoke
-it from the repository root — the documents reference `./figs/...` and `./fonts/...`
-relative to the build directory.
-
-</details>
-
----
-
-## 📦 Dependencies
-
-The setup scripts install these distribution package names — not the `\usepackage`
-names.
-
-<details open>
-<summary><b>22 packages</b></summary>
-
-<br>
-
-| `\usepackage` | MiKTeX / TeX Live package | Provides |
-| --- | --- | --- |
-| — (engine) | `xetex` | `xelatex.exe` |
-| — (engine) | `l3kernel`, `l3packages` | LaTeX3 programming layer |
-| `array`, `tabularx` | `latex-tools` (`tools`) | Standard tools bundle |
-| — | `latex-fonts` (`fix-cm`) | CM font fixes |
-| `bookmark` | `bookmark` | PDF bookmark driver |
-| `fontspec` | `fontspec` | OpenType font selection |
-| `amsmath` | `amsmath` | Math typesetting |
-| `unicode-math` | `unicode-math` | OpenType math |
-| `ctex` | `ctex` | CJK support (`xeCJK`, `zhnumber`) |
-| `xltabular` | `xltabular` | Tables that break across pages, header repeated |
-| `needspace` | `needspace` | Page-break control |
-| `geometry` | `geometry` | Page layout |
-| `minted` | `minted` | Code listings |
-| `xcolor` | `xcolor` | Colour |
-| `graphicx` | `graphics` | `\includegraphics` |
-| `titling` | `titling` | Title-block control |
-| `enumitem` | `enumitem` | List customisation |
-| `fancyhdr` | `fancyhdr` | Header / footer |
-| `hyperref` | `hyperref` | Hyperlinks, PDF metadata |
-| — (fonts) | `lm`, `lm-math` | Latin Modern OpenType |
-
-</details>
-
-> MiKTeX installs missing packages on demand, so a plain build often works before the
-> setup script runs. The scripts exist to make it **fast, offline-capable and reproducible**.
-
----
-
-## 📁 Layout
+## Directory layout
 
 ```
-CUHKSZ-SAI-LaTeX_Template/
-├── AIE3905_Week7_Milestone_Grading_Standard.tex      Chinese document  (CN)
-├── AIE3905_Week7_Milestone_Grading_Standard_EN.tex   English document  (EN)
-├── docs/
-│   └── xelatex-notes.md                           XeLaTeX pitfalls and verification
-├── figs/
-│   └── cuhk-sai-logo01.png                           full-width letterhead
-├── fonts/                                            vendored Noto CJK + OFL text
+templates/sai-report/                   # the repository root in the public mirror
+├── main-zh.tex · main-en.tex           # ZH/EN entry points: \input sections, bibliography, appendix
+├── metadata.tex                        # the one metadata file to edit
+├── styles/sai-report.sty               # shared style: fonts, page, header/footer, title page, table/code helpers
+├── frontmatter/{zh,en}/abstract.tex    # abstract and keywords
+├── sections/{zh,en}/                   # seven sections + appendix, structurally identical
+│   ├── 01-introduction.tex
+│   ├── 02-related-work.tex
+│   ├── 03-method.tex
+│   ├── 04-implementation.tex
+│   ├── 05-evaluation.tex
+│   ├── 06-discussion.tex
+│   ├── 07-conclusion.tex
+│   └── appendix.tex
+├── tables/{zh,en}/                     # formal table + longtable
+├── code/example.py                     # minted example
+├── figures/                            # example figure (with regenerable TikZ source)
+├── references.bib                      # biblatex / biber
+├── docs/xelatex-notes.md               # XeLaTeX pitfalls and verification checklist
+├── figs/cuhk-sai-logo01.png            # SAI letterhead
+├── fonts/                              # vendored Noto CJK + the OFL licence
 ├── scripts/
-│   ├── setup-miktex.ps1  ·  setup-texlive.sh         install packages + Pygments
-│   └── build.ps1         ·  build.sh                 build and report
-├── .vscode/settings.json                             LaTeX Workshop recipe
-├── .gitattributes · .gitignore · LICENSE             housekeeping
-└── tmp/                                              build output (ignored)
+│   ├── setup-miktex.ps1 · setup-texlive.sh    # packages + Pygments
+│   ├── build.ps1 · build.sh                   # build + log gate + biber
+│   └── check-parity.py                        # ZH/EN structural comparison
+├── .vscode/settings.json               # LaTeX Workshop recipe
+├── .gitattributes · .gitignore · LICENSE
+└── tmp/                                # build output (ignored)
 ```
 
-<details>
-<summary><b>Why are the fonts vendored?</b></summary>
+## Keeping the two languages in sync
 
-<br>
+- The two entry points share `metadata.tex`, `styles/`, `references.bib`, `figures/`
+  and `tables/`; language-specific prose lives in `sections/zh/` and `sections/en/`.
+- Keep the same `section` / `subsection` order, the same `\label` keys and the same
+  `\cite` / `\ref` keys on both sides. The prose may differ; the structure must not.
+- Before committing, run:
 
-So that the documents look identical on every machine — including one with no network
-access — instead of silently falling back to whatever CJK font happens to be installed.
-The trade-off is that `fonts/` adds roughly 40 MB to the repository.
+  ```bash
+  python3 scripts/check-parity.py
+  ```
 
-</details>
+  It compares heading levels, label order, the cite/ref multisets and the number of
+  figures, tables and longtables. CI runs it too.
+- If you change one language first, keep the other side structurally complete;
+  otherwise the parity check fails.
+- Figure/table numbers, section order and citation keys must match in both languages.
 
----
+## Typography conventions
 
-## 🎨 Customising
+- **Figures.** Use `figure` + `\includegraphics` + `\caption` + `\label`, then
+  `\figsource{...}` after the caption. Reference with `图~\ref{...}` in Chinese and
+  `Figure~\ref{...}` in English.
+- **Tables.** Use `table` + `\formaltable` + `tabularx` (the `Y` column wraps) for
+  formal tables; `booktabs` for results; `longtable` with `\endhead` for tables that
+  break across pages. Do not put only an `\hline` in `\endfoot`.
+- **Code.** Use `minted`; it needs `-shell-escape` and Pygments, both handled by the
+  build scripts. See `code/example.py` and `sections/*/04-implementation.tex`.
+- **Citations.** `biblatex` numeric + `biber`; write `\cite{key}`; the entry points call
+  `\printbibliography`.
+- **Appendix.** Use `\section{...}` after `\appendix`; the example is "Supplementary
+  Material".
+- **Page.** A4, 170mm × 241mm text block, 11pt; title page + header logo + footer with
+  date, page number and course.
+- **Build output.** `tmp/` is disposable; do not commit it. `--clean` empties it.
 
-| What | Where | Note |
-| --- | --- | --- |
-| Header logo | `\fancyhead[C]` | Spans the full text width |
-| Header / title gap | `headsep=8mm` in `\geometry{...}` | Raise it to push the title down |
-| Header height | `headheight=18.5mm` | Must be ≥ the logo height (16.6 mm) or `fancyhdr` warns |
-| Chinese fonts | `\setCJKmainfont`, `\setCJKsansfont`, `\newCJKfontfamily\zhhei` | Point at `./fonts/` |
-| Latin fonts | `\setmainfont{lmroman10-regular.otf}` | Ships with the TeX distribution |
-| Point size | `\documentclass[11pt]{article}` | Top of each file |
-
-> 💡 The two documents mirror each other, so a content change normally belongs in **both**.
-
----
-
-## 📜 Licence
+## Fonts, licence and logo
 
 | Scope | Licence |
 | --- | --- |
-| Template, scripts, documents | **MIT** © 2026 Zijin CAI — see [`LICENSE`](LICENSE) |
-| Noto Serif SC / Noto Sans SC | **SIL OFL 1.1** — a separate licence MIT does not override — see [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
+| Template, scripts, documentation | **MIT** © 2026 Zijin CAI and contributors, see [`LICENSE`](LICENSE) |
+| Noto Serif SC / Noto Sans SC | **SIL OFL 1.1**, see [`fonts/LICENSE.txt`](fonts/LICENSE.txt) |
+| Latin Modern | shipped with TeX Live, GUST font licence |
+| SAI letterhead | **not** covered by MIT; for SAI course/member documents only, see [`figs/README.md`](figs/README.md) |
 
-Fonts upstream: <https://github.com/notofonts/noto-cjk>
+Font upstream: <https://github.com/notofonts/noto-cjk>.
+
+**Replacing the logo:** point `\SAIReportLogo` in `metadata.tex` at your own letterhead,
+or set `\SAIReportLogo{}` and load the style with `\usepackage[nologo]{styles/sai-report}`.
+Do not put an unauthorised partner logo, real student data or internal course policy in
+a public copy of the template.
+
+## Where course-specific material lives
+
+Course rubrics, cohort policy and make-up/absence rules belong to the course repository,
+not to the template. AIE3905 LaTeX handouts live under
+`docs/guidance/latex/week7-milestone/` in the source repository; this template keeps only
+the generic skeleton, examples and tooling. Do not copy course grading policy into
+`templates/sai-report/`.
+
+To use the template for a course report, either:
+
+1. copy the whole `templates/sai-report/` directory and edit `metadata.tex` and
+   `sections/`; or
+2. keep your own document and point `\SAIAssetRoot` at the template's `fonts/` and
+   `figs/`, then `\usepackage[...]{.../styles/sai-report}`.
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| `xelatex was not found` | Install TeX Live / MiKTeX, or run the setup script |
+| `fontspec` / `ctex` cannot find a font | Check the four OTFs in `fonts/`; point `\SAIAssetRoot` at the directory containing `fonts/` |
+| `minted` reports `pygmentize` | Install Pygments; the build scripts already pass `-shell-escape` |
+| `biber was not found` / empty bibliography | Install biber; `build.sh` / `build.ps1` run it automatically |
+| `ignored error:` in the log | Known longtable page-split recovery message; the build gate excludes it |
+| `headheight is too small` | The letterhead is taller than 18.5mm; adjust geometry in `styles/sai-report.sty` or use `[nologo]` |
+| `Overfull` / `Underfull` | The build fails; check narrow columns, long URLs, unbreakable words or column widths |
+| Windows refuses to run `.ps1` | Use `scripts\build.cmd` / `scripts\setup.cmd` |
+| Overleaf | Needs XeLaTeX + `-shell-escape` + the vendored fonts; minted may be limited on some plans, in which case switch to `verbatim` |
+
+## Release and versions
+
+- **Source:** `templates/sai-report/` in the `AIE3905-Criteria` repository.
+- **Release mirror:** <https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template>.
+  Release flow: tag the source, `git subtree split --prefix=templates/sai-report`, push
+  to the mirror, then tag the mirror. See [`PROVENANCE.md`](PROVENANCE.md) and
+  [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **Version:** v1.0.0 is the first release of the generic report template. Future
+  template changes start in the source repository and are released to the mirror.
+- The old public issues #5–#10 (from the course-rubric era) are superseded by map #1 in
+  the source repository and are closed at release with pointers.
+
+## Licence
+
+The template code and documentation are MIT; the vendored fonts are under SIL OFL 1.1;
+the SAI letterhead is outside the MIT grant. See [`LICENSE`](LICENSE),
+[`fonts/LICENSE.txt`](fonts/LICENSE.txt), [`NOTICE.md`](NOTICE.md) and
+[`figs/README.md`](figs/README.md).
+
+## Related documents
+
+- [`PROVENANCE.md`](PROVENANCE.md) — where the template came from and how it is maintained
+- [`NOTICE.md`](NOTICE.md) — fonts, logo and third-party asset licences
+- [`figs/README.md`](figs/README.md) — letterhead usage boundary and replacement
+- [`docs/xelatex-notes.md`](docs/xelatex-notes.md) — XeLaTeX pitfalls and verification checklist
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — pre-release checklist

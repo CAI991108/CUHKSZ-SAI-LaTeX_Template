@@ -4,7 +4,8 @@
 >
 > 每条都写成「现象 → 原因 → 处理」，可以直接当检查表用。为了让笔记可公开，`§6` 之前的示例一律抽象化，不含任何具体文档内容。
 >
-> 适用版本：XeLaTeX (TeX Live 2025 / MiKTeX 24+)、`ctex` 2.5+、`xltabular` 0.5+。
+> 适用版本：XeLaTeX (TeX Live 2025+ / MiKTeX 24+)、`ctex` 2.5+、`biblatex` / `biber`。
+> 本模板的跨页表用 `longtable`；`xltabular` 是可选替代，setup 脚本不安装它。
 
 ---
 
@@ -67,7 +68,9 @@ LaTeX Error: Command \thedate undefined.
 
 ## 2. 表格
 
-### 2.1 长表跨页用 `xltabular`
+### 2.1 长表跨页：`longtable`（可选 `xltabular`）
+
+> 本模板的示例长表用 `longtable`，不依赖额外宏包。下面的 `xltabular` 经验在需要自动列宽时仍然适用，但使用前要先安装该宏包。
 
 `tabularx` 不能跨页；`longtable` 不能自动算列宽；`xltabular` 两者兼得（需要单独安装，MiKTeX / TeX Live 包名都是 `xltabular`）。
 
@@ -307,4 +310,5 @@ pix.save(f"page{i:02d}.png")
 - [ ] 填充率异常页（< 70%）逐页确认：是表格整体下移，还是真漏了内容
 - [ ] 中文版与英文版结构一致、交叉引用编号一致
 - [ ] PDF 元数据（标题、作者）已设置
+- [ ] `python3 scripts/check-parity.py` 通过（中英标题层级、label、cite/ref 一致）
 - [ ] 新增宏包已同时写入两套 setup 脚本与 README 的宏包表
