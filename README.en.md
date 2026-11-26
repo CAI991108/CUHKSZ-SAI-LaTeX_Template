@@ -158,7 +158,9 @@ templates/sai-report/                   # the repository root in the public mirr
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # packages + Pygments
 │   ├── build.ps1 · build.sh                   # build + log gate + biber
 │   └── check-parity.py                        # ZH/EN structural comparison
+├── .github/workflows/template.yml      # public-mirror CI (runs at the mirror root)
 ├── .vscode/settings.json               # LaTeX Workshop recipe
+├── CONTRIBUTING.md · NOTICE.md         # release checklist + licence notices
 ├── .gitattributes · .gitignore · LICENSE
 └── tmp/                                # build output (ignored)
 ```
@@ -253,6 +255,8 @@ To use the template for a course report, either:
   [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **Version:** v1.0.0 is the first release of the generic report template. Future
   template changes start in the source repository and are released to the mirror.
+- **Pre-release check:** run `./scripts/check-release.sh` in the template root (needs
+  XeLaTeX); use `--skip-build` to inspect existing PDFs only.
 - The old public issues #5–#10 (from the course-rubric era) are superseded by map #1 in
   the source repository and are closed at release with pointers.
 

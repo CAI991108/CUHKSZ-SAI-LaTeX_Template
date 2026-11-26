@@ -152,7 +152,9 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # 装宏包 + Pygments
 │   ├── build.ps1 · build.sh                   # 编译 + 日志门禁 + biber
 │   └── check-parity.py                        # 中英结构比对
+├── .github/workflows/template.yml      # 公开镜像的 CI（在镜像根目录运行）
 ├── .vscode/settings.json               # LaTeX Workshop recipe
+├── CONTRIBUTING.md · NOTICE.md         # 发布检查清单 + 许可说明
 ├── .gitattributes · .gitignore · LICENSE
 └── tmp/                                # 构建产物（已忽略）
 ```
@@ -239,6 +241,7 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
   再在镜像仓库打同名 tag。见 [`PROVENANCE.md`](PROVENANCE.md) 与
   [`CONTRIBUTING.md`](CONTRIBUTING.md)。
 - **版本**：v1.0.0 是通用报告模板的首个版本；之后的模板改动先改源仓库，再发布镜像。
+- **发布前检查**：在模板目录运行 `./scripts/check-release.sh`（需要 XeLaTeX）；只想检查已有 PDF 时用 `--skip-build`。
 - 公开仓库旧 issue #5–#10（课程细则时代）由源仓库 map #1 接管，发布时逐条关闭并附指针。
 
 ## 许可

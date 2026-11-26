@@ -1,0 +1,55 @@
+name: template
+
+# This is the workflow that runs in the public release mirror, where the
+# template is the repository root.  The source repository has its own
+# path-filtered copy under .github/workflows/template.yml.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build SAI report template
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check bilingual parity
+        run: python3 scripts/check-parity.py
+
+      - name: Build ZH and EN with TeX Live
+        run: |
+          docker run --rm \
+            -v "$PWD":/work \
+            -w /work \
+            ghcr.io/xu-cheng/texlive-full:latest \
+            bash -c './scripts/build.sh --clean --all'
+
+      - name: Guard against course/author leakage
+        run: |
+          if grep -rniE 'AIE3905|S03|S06|Zijin|理工学院|School of Science' \
+            main-*.tex metadata.tex styles frontmatter sections tables code references.bib; then
+            echo "::error::course-specific text leaked into the template"
+            exit 1
+          fi
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sai-report-template-pdfs
+          path: |
+            tmp/main-zh.pdf
+            tmp/main-en.pdf
+          if-no-files-found: error
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sai-report-template-logs
+          path: tmp/*.log
+          if-no-files-found: ignore
