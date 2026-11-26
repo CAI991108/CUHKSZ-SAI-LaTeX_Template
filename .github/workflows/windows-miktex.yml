@@ -10,12 +10,11 @@ name: windows-miktex
 # documents for Windows users, and it runs the scripts under Windows PowerShell
 # 5.1 rather than pwsh.
 #
-# It stays off the pull_request path because installing MiKTeX on the runner
-# takes several minutes.  It runs for pushes to main, for release tags, and on
-# demand from the Actions tab.
+# Installing MiKTeX on the runner and building both documents takes 8-9 minutes,
+# so this is a release gate rather than a per-push check: it runs on v* tags and
+# on demand.  The TeX Live job in template.yml stays on the everyday push path.
 on:
   push:
-    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 

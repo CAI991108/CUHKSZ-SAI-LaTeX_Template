@@ -50,6 +50,7 @@ in this directory. It lives under `docs/guidance/latex/` in the course repositor
 - [ ] PDF metadata is generic (example title/author), A4, fonts embedded.
 - [ ] The public mirror's workflows (`.github/workflows/template.yml` and
       `windows-miktex.yml` in this directory) build the same files and upload the PDFs.
+      `windows-miktex` runs on the release tag; check it before announcing the release.
 - [ ] Update `README.md`, `README.en.md` and `NOTICE.md` if the user-facing surface changed.
 - [ ] Tag `vX.Y.Z`; split the subtree; push the mirror; tag the mirror; attach the PDFs.
 - [ ] Close the superseded public issues (#5–#10) with pointers to the new map/tag.

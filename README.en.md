@@ -264,6 +264,9 @@ To use the template for a course report, either:
   Future template changes start in the source repository and are released to the mirror.
 - **Pre-release check:** run `./scripts/check-release.sh` in the template root (needs
   XeLaTeX); use `--skip-build` to inspect existing PDFs only.
+- **Windows check:** the `windows-miktex` workflow builds on a real Windows + MiKTeX
+  runner on `v*` tags and on demand (about 8 minutes); everyday pushes only run the
+  TeX Live job in `template.yml`.
 - The old public issues #5–#10 (from the course-rubric era) are superseded by map #1 in
   the source repository and are closed at release with pointers.
 

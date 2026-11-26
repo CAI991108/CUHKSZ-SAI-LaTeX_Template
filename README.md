@@ -245,6 +245,7 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
   [`CONTRIBUTING.md`](CONTRIBUTING.md)。
 - **版本**：v1.0.x 是通用报告模板的首个系列；之后的模板改动先改源仓库，再发布镜像。
 - **发布前检查**：在模板目录运行 `./scripts/check-release.sh`（需要 XeLaTeX）；只想检查已有 PDF 时用 `--skip-build`。
+- **Windows 验收**：`windows-miktex` workflow 在 `v*` tag 和手动触发时跑真实 Windows + MiKTeX 构建（约 8 分钟）；日常 push 只走 `template.yml` 的 TeX Live 构建。
 - 公开仓库旧 issue #5–#10（课程细则时代）由源仓库 map #1 接管，发布时逐条关闭并附指针。
 
 ## 许可
