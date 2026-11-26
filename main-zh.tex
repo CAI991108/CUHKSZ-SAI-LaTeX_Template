@@ -1,0 +1,49 @@
+% ============================================================================
+%  main-zh.tex — Chinese report entry point
+%
+%  Edit metadata.tex first.  Add or remove sections by editing the \input
+%  lines at the bottom; the section bodies live in sections/zh/.
+% ============================================================================
+\documentclass[11pt]{article}
+
+\input{metadata}
+
+% Map the shared style's fields to the Chinese metadata block.
+\newcommand{\SAIReportTitle}{\SAIReportTitleZH}
+\newcommand{\SAIReportSubtitle}{\SAIReportSubtitleZH}
+\newcommand{\SAIReportCourse}{\SAIReportCourseZH}
+\newcommand{\SAIReportKeywordText}{\SAIReportKeywordsZH}
+
+\usepackage[cjk]{styles/sai-report}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+这是一段占位摘要。用三到五句话说明报告要解决的问题、采用的方法、可核验的证据，
+以及最重要的结论或限制。摘要不写背景综述，也不引用图表编号。
+\end{abstract}
+
+\SAIReportKeywords{\SAIReportKeywordText}
+
+\tableofcontents
+\clearpage
+
+\section{引言}
+\label{sec:introduction}
+
+这里写问题、动机与报告结构。正文中的占位文字会在骨架完成后由
+\texttt{sections/zh/} 下的文件替换。
+
+\section{方法}
+\label{sec:method}
+
+这里写方法与证据链。
+
+\section{结论}
+\label{sec:conclusion}
+
+这里写结论、限制与下一步工作。
+
+\end{document}

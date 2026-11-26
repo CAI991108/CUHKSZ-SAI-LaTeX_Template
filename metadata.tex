@@ -1,0 +1,46 @@
+% ============================================================================
+%  metadata.tex — the only file most reports need to edit.
+%
+%  The two entry points map the ZH/EN fields below to the shared style:
+%      main-zh.tex  -> \SAIReportTitle, \SAIReportSubtitle, \SAIReportCourse,
+%                      \SAIReportKeywordText from the *ZH values
+%      main-en.tex  -> the same from the *EN values
+%
+%  \SAIAssetRoot is the directory that contains fonts/ and figs/.  Leave it
+%  as ./ when the document sits in the template root.  A document in a
+%  subdirectory should point back at the template, for example:
+%      \renewcommand{\SAIAssetRoot}{../../templates/sai-report/}
+%
+%  Set \SAIReportLogo to {} and load the style with [nologo] when you do not
+%  have the SAI letterhead.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+%  Asset root (fonts/ and figs/)
+% ---------------------------------------------------------------------------
+\newcommand{\SAIAssetRoot}{./}
+
+% ---------------------------------------------------------------------------
+%  Language-neutral fields
+% ---------------------------------------------------------------------------
+\newcommand{\SAIReportAuthor}{Your Name}
+\newcommand{\SAIReportStudentID}{Student ID}
+\newcommand{\SAIReportInstructor}{Instructor}
+\newcommand{\SAIReportDate}{\today}
+\newcommand{\SAIReportLogo}{figs/cuhk-sai-logo01.png}
+
+% ---------------------------------------------------------------------------
+%  Chinese fields
+% ---------------------------------------------------------------------------
+\newcommand{\SAIReportTitleZH}{你的报告题目}
+\newcommand{\SAIReportSubtitleZH}{副标题：问题、方法与证据}
+\newcommand{\SAIReportCourseZH}{课程名称}
+\newcommand{\SAIReportKeywordsZH}{关键词一；关键词二；关键词三}
+
+% ---------------------------------------------------------------------------
+%  English fields
+% ---------------------------------------------------------------------------
+\newcommand{\SAIReportTitleEN}{Your Report Title}
+\newcommand{\SAIReportSubtitleEN}{Subtitle: problem, method and evidence}
+\newcommand{\SAIReportCourseEN}{Course Name}
+\newcommand{\SAIReportKeywordsEN}{keyword one; keyword two; keyword three}

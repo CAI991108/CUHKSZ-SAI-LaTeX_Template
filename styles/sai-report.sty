@@ -1,0 +1,298 @@
+% ============================================================================
+%  sai-report.sty — shared style for the SAI report template
+%
+%  Usage (from the template root):
+%      \documentclass[11pt]{article}
+%      \input{metadata}
+%      \usepackage[cjk]{styles/sai-report}   % Chinese; omit [cjk] for English
+%
+%  Options:
+%      cjk     load ctex + the vendored Noto CJK fonts (Chinese documents)
+%      nologo  no letterhead/logo; the header is suppressed and the top margin
+%              is reduced. Useful when you do not have the SAI letterhead.
+%
+%  Everything a student normally edits lives in metadata.tex, not here.
+% ============================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{sai-report}[2026/11/26 v1.0 SAI report template]
+
+% ---------------------------------------------------------------------------
+%  Options
+% ---------------------------------------------------------------------------
+\newif\ifSAI@cjk
+\newif\ifSAI@logo
+\SAI@logotrue
+\DeclareOption{cjk}{\SAI@cjktrue}
+\DeclareOption{nologo}{\SAI@logofalse}
+\DeclareOption*{\PackageWarning{sai-report}{Unknown option '\CurrentOption'}}
+\ProcessOptions\relax
+
+% ---------------------------------------------------------------------------
+%  Metadata fallbacks.  metadata.tex should define these before this package
+%  is loaded; the fallbacks keep a bare document compiling.
+% ---------------------------------------------------------------------------
+\providecommand{\SAIAssetRoot}{./}
+\providecommand{\SAIReportTitle}{Your Report Title}
+\providecommand{\SAIReportSubtitle}{A subtitle}
+\providecommand{\SAIReportAuthor}{Your Name}
+\providecommand{\SAIReportStudentID}{Student ID}
+\providecommand{\SAIReportCourse}{Course Name}
+\providecommand{\SAIReportInstructor}{Instructor}
+\providecommand{\SAIReportDate}{\today}
+\providecommand{\SAIReportLogo}{figs/cuhk-sai-logo01.png}
+\providecommand{\SAIReportKeywordText}{}
+\providecommand{\SAIReportFooterLeft}{\SAIReportDate}
+\providecommand{\SAIReportFooterRight}{\SAIReportCourse}
+
+% ---------------------------------------------------------------------------
+%  Fonts: Latin Modern for Latin text and maths; Noto CJK vendored in fonts/
+%  for Chinese.  The font directory follows \SAIAssetRoot, so a document in a
+%  subdirectory can point at the template without copying 40 MB of fonts.
+% ---------------------------------------------------------------------------
+\RequirePackage{fontspec}
+\setmainfont{lmroman10-regular.otf}[
+    BoldFont       = lmroman10-bold.otf,
+    ItalicFont     = lmroman10-italic.otf,
+    BoldItalicFont = lmroman10-bolditalic.otf
+]
+\setsansfont{lmsans10-regular.otf}[
+    BoldFont       = lmsans10-bold.otf,
+    ItalicFont     = lmsans10-oblique.otf,
+    BoldItalicFont = lmsans10-boldoblique.otf
+]
+\RequirePackage{amsmath}
+\RequirePackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+
+\edef\SAIFontDir{\SAIAssetRoot fonts/}
+\ifSAI@cjk
+    \RequirePackage[UTF8, fontset=none, heading=true]{ctex}
+    \setCJKmainfont{NotoSerifSC-Regular.otf}[
+        Path           = \SAIFontDir,
+        BoldFont       = NotoSerifSC-Bold.otf,
+        ItalicFont     = NotoSerifSC-Regular.otf,
+        BoldItalicFont = NotoSerifSC-Bold.otf
+    ]
+    \setCJKsansfont{NotoSansSC-Regular.otf}[
+        Path           = \SAIFontDir,
+        BoldFont       = NotoSansSC-Bold.otf,
+        ItalicFont     = NotoSansSC-Regular.otf,
+        BoldItalicFont = NotoSansSC-Bold.otf
+    ]
+    \newCJKfontfamily\zhhei{NotoSansSC-Regular.otf}[
+        Path     = \SAIFontDir,
+        BoldFont = NotoSansSC-Bold.otf
+    ]
+\fi
+
+% ---------------------------------------------------------------------------
+%  Language-dependent headings and labels
+% ---------------------------------------------------------------------------
+\ifSAI@cjk
+    \newcommand{\SAIReportTitleFont}{\zhhei\bfseries}
+    \newcommand{\SAIReportSubtitleFont}{\zhhei}
+    \providecommand{\SAIReportAbstractName}{摘要}
+    \providecommand{\SAIReportKeywordsName}{关键词}
+    \providecommand{\SAIReportKeywordSep}{：}
+    \providecommand{\SAIReportBibliographyName}{参考文献}
+    \providecommand{\SAIReportSourceName}{来源}
+    \ctexset{
+        section       = { format = \Large\zhhei\bfseries },
+        subsection    = { format = \large\zhhei\bfseries },
+        subsubsection = { format = \normalsize\zhhei\bfseries }
+    }
+\else
+    \newcommand{\SAIReportTitleFont}{\sffamily\bfseries}
+    \newcommand{\SAIReportSubtitleFont}{\sffamily}
+    \providecommand{\SAIReportAbstractName}{Abstract}
+    \providecommand{\SAIReportKeywordsName}{Keywords}
+    \providecommand{\SAIReportKeywordSep}{: }
+    \providecommand{\SAIReportBibliographyName}{References}
+    \providecommand{\SAIReportSourceName}{Source}
+    % Latin Modern Sans headings, mirroring the Chinese \zhhei headings.
+    \renewcommand\section{\@startsection{section}{1}{\z@}%
+        {-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}%
+        {\normalfont\Large\sffamily\bfseries}}
+    \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+        {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+        {\normalfont\large\sffamily\bfseries}}
+    \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+        {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+        {\normalfont\normalsize\sffamily\bfseries}}
+\fi
+
+% ---------------------------------------------------------------------------
+%  Page layout
+% ---------------------------------------------------------------------------
+\RequirePackage{geometry}
+\ifSAI@logo
+    \geometry{
+        a4paper,
+        total={170mm,241mm},
+        left=20mm,
+        top=36mm,
+        headheight=18.5mm,
+        headsep=8mm,
+        footskip=12mm
+    }
+\else
+    \geometry{
+        a4paper,
+        total={170mm,241mm},
+        left=20mm,
+        top=25mm,
+        headheight=14pt,
+        headsep=6mm,
+        footskip=12mm
+    }
+\fi
+
+% ---------------------------------------------------------------------------
+%  General packages
+% ---------------------------------------------------------------------------
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+\RequirePackage{booktabs}
+\RequirePackage{float}
+\RequirePackage{caption}
+\RequirePackage{enumitem}
+\RequirePackage{needspace}
+\RequirePackage{etoolbox}
+\RequirePackage{minted}
+\RequirePackage{csquotes}
+\RequirePackage[style=numeric,backend=biber,sorting=none,maxbibnames=99]{biblatex}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{bookmark}
+
+\captionsetup{font=small, labelfont=bf}
+\setlength{\emergencystretch}{3em}
+\raggedbottom
+\linespread{1.15}
+
+% ---------------------------------------------------------------------------
+%  Header and footer
+% ---------------------------------------------------------------------------
+\RequirePackage{fancyhdr}
+\newcommand{\SAIReportLogoPath}{\SAIAssetRoot\SAIReportLogo}
+\newcommand{\SAIReportHeaderLogo}{%
+    \IfFileExists{\SAIReportLogoPath}{%
+        \includegraphics[width=\textwidth]{\SAIReportLogoPath}%
+    }{%
+        \PackageWarning{sai-report}{Logo not found: \SAIReportLogoPath}%
+    }%
+}
+\newcommand{\SAIReportTitleLogo}{%
+    \IfFileExists{\SAIReportLogoPath}{%
+        \includegraphics[width=0.8\textwidth]{\SAIReportLogoPath}%
+    }{%
+        \PackageWarning{sai-report}{Logo not found: \SAIReportLogoPath}%
+    }%
+}
+
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyhead[C]{\ifSAI@logo\ifdefempty{\SAIReportLogo}{}{\SAIReportHeaderLogo}\fi}%
+    \fancyfoot[L]{\small\SAIReportFooterLeft}%
+    \fancyfoot[C]{\small\thepage}%
+    \fancyfoot[R]{\small\SAIReportFooterRight}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+}
+\pagestyle{plain}
+
+% ---------------------------------------------------------------------------
+%  Title page
+% ---------------------------------------------------------------------------
+\renewcommand{\maketitle}{%
+    \begin{titlepage}
+        \thispagestyle{empty}%
+        \centering
+        \vspace*{1.2cm}
+        \ifSAI@logo\ifdefempty{\SAIReportLogo}{}{\SAIReportTitleLogo\par}\fi
+        \vspace{1.2cm}
+        {\Huge\SAIReportTitleFont\SAIReportTitle\par}
+        \vspace{0.6cm}
+        {\Large\SAIReportSubtitleFont\SAIReportSubtitle\par}
+        \vspace{2cm}
+        {\large\SAIReportAuthor\par}
+        {\large\SAIReportStudentID\par}
+        \vfill
+        {\large\SAIReportCourse\par}
+        {\large\SAIReportInstructor\par}
+        {\large\SAIReportDate\par}
+        \vspace*{0.8cm}
+    \end{titlepage}
+    \pagenumbering{arabic}%
+    \pagestyle{plain}%
+}
+
+\title{\SAIReportTitle}
+\author{\SAIReportAuthor}
+\date{\SAIReportDate}
+
+\hypersetup{
+    hidelinks,
+    pdftitle={\SAIReportTitle},
+    pdfauthor={\SAIReportAuthor},
+    pdfsubject={\SAIReportCourse},
+    pdfkeywords={\SAIReportKeywordText},
+    pdfcreator={XeLaTeX with sai-report.sty}
+}
+
+% ---------------------------------------------------------------------------
+%  Abstract and keywords
+% ---------------------------------------------------------------------------
+\renewenvironment{abstract}{%
+    \begin{center}
+        {\Large\SAIReportTitleFont\SAIReportAbstractName}
+    \end{center}
+    \begin{quote}\small
+}{\end{quote}}
+
+\newcommand{\SAIReportKeywords}[1]{%
+    \par\noindent{\bfseries\SAIReportKeywordsName\SAIReportKeywordSep}#1\par
+}
+\newcommand{\figsource}[1]{%
+    \par\smallskip{\footnotesize\SAIReportSourceName\SAIReportKeywordSep#1}%
+}
+
+% ---------------------------------------------------------------------------
+%  Tables and lists used by the examples
+% ---------------------------------------------------------------------------
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{B}{>{\raggedright\arraybackslash}p{3.2cm}}
+\newcolumntype{N}{>{\centering\arraybackslash}p{1.5cm}}
+
+\newcommand{\formaltable}{%
+    \small
+    \setlength{\tabcolsep}{5pt}%
+    \renewcommand{\arraystretch}{1.2}%
+    \setlength{\arrayrulewidth}{0.4pt}%
+}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlist[itemize]{topsep=3pt, itemsep=2pt, parsep=0pt, leftmargin=2em}
+\setlist[enumerate]{topsep=3pt, itemsep=2pt, parsep=0pt, leftmargin=2em}
+
+\newcommand{\band}[2]{#1\par\vspace{1pt}{\footnotesize #2}}
+\newcommand{\vstrut}[1]{\rule{0pt}{#1}}
+
+% ---------------------------------------------------------------------------
+%  Code
+% ---------------------------------------------------------------------------
+\setminted{
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=lightgray!10,
+    fontsize=\footnotesize,
+    linenos=true,
+    breaklines=true,
+    breakanywhere=true,
+    tabsize=4
+}
+\newcommand{\codeblock}[1]{\colorbox{gray!10}{\texttt{#1}}}
