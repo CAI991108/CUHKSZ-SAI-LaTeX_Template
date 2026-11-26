@@ -44,6 +44,7 @@
 课程成员（**源仓库**，模板在子目录里）：
 
 ```bash
+# 私有仓库，仅课程成员
 git clone https://github.com/CAI991108/AIE3905-Criteria.git
 cd AIE3905-Criteria/templates/sai-report
 ```

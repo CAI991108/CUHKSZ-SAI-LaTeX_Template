@@ -47,6 +47,7 @@ A bilingual LaTeX template for **SAI reports**. It provides:
 Course members (**source repository**, template lives in a subdirectory):
 
 ```bash
+# private; course members only
 git clone https://github.com/CAI991108/AIE3905-Criteria.git
 cd AIE3905-Criteria/templates/sai-report
 ```
