@@ -1,0 +1,14 @@
+\section{补充材料}
+\label{app:cases}
+
+本节给出逐条测试记录与复现命令。表~\ref{tab:test-cases} 是评估中使用的 48 份文档的
+子集；完整记录与审计日志可从示例仓库重新生成。
+
+\input{tables/zh/test-cases}
+
+复现实验的最小命令如下（示例项目结构；替换为你自己的入口即可）：
+
+\begin{minted}[fontsize=\footnotesize]{bash}
+python -m pip install -r requirements.txt
+python -m triage.run --config configs/pilot.yaml --seed 7
+\end{minted}

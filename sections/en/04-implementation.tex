@@ -1,0 +1,27 @@
+\section{Implementation}
+\label{sec:implementation}
+
+\subsection{Architecture and Reproducibility}
+\label{sec:architecture}
+
+The prototype is written in Python 3.11. Dependencies are pinned in
+\texttt{requirements.txt}, and the random seed and configuration file are committed with the
+code. The core routing logic is a single small module; the review interface is a command-line
+tool, so the workflow can be reproduced on a server without a graphical environment. Each
+stage in Figure~\ref{fig:pipeline} has its own test, and the audit trail is written as JSON
+Lines, one action per line.
+
+The function below is a minimal example of the routing logic: a document passes automatically
+when the model score is above the threshold and an evidence span exists; otherwise it goes to
+human review.
+
+\inputminted[fontsize=\footnotesize]{python}{code/example.py}
+
+\subsection{Components and Responsibilities}
+\label{sec:components}
+
+Table~\ref{tab:components} lists the main components and their responsibilities. The
+interfaces are explicit: the classifier returns only a label and a score, the claim extractor
+returns only text spans and offsets, and the audit trail is append-only.
+
+\input{tables/en/components}

@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+  \centering
+  \formaltable
+  \begin{tabularx}{\textwidth}{|B|Y|}
+    \hline
+    \textbf{Component} & \textbf{Responsibility} \\ \hline
+    Document intake & Reads the document and metadata; checks format and authorisation fields. \\ \hline
+    Classifier & Proposes a topic label and a confidence score; never rejects a document. \\ \hline
+    Claim extractor & Returns the text spans and offsets that support the label. \\ \hline
+    Human review & Accepts, edits or rejects the proposal; the final label is human. \\ \hline
+    Audit trail & Appends model output, review action, time and reason. \\ \hline
+  \end{tabularx}
+  \caption{System components and responsibilities.}
+  \label{tab:components}
+\end{table}

@@ -2,7 +2,7 @@
 %  main-zh.tex — Chinese report entry point
 %
 %  Edit metadata.tex first.  Add or remove sections by editing the \input
-%  lines at the bottom; the section bodies live in sections/zh/.
+%  lines below; the section bodies live in sections/zh/.
 % ============================================================================
 \documentclass[11pt]{article}
 
@@ -16,34 +16,28 @@
 
 \usepackage[cjk]{styles/sai-report}
 
+\addbibresource{references.bib}
+
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
-这是一段占位摘要。用三到五句话说明报告要解决的问题、采用的方法、可核验的证据，
-以及最重要的结论或限制。摘要不写背景综述，也不引用图表编号。
-\end{abstract}
-
-\SAIReportKeywords{\SAIReportKeywordText}
+\input{frontmatter/zh/abstract}
 
 \tableofcontents
 \clearpage
 
-\section{引言}
-\label{sec:introduction}
+\input{sections/zh/01-introduction}
+\input{sections/zh/02-related-work}
+\input{sections/zh/03-method}
+\input{sections/zh/04-implementation}
+\input{sections/zh/05-evaluation}
+\input{sections/zh/06-discussion}
+\input{sections/zh/07-conclusion}
 
-这里写问题、动机与报告结构。正文中的占位文字会在骨架完成后由
-\texttt{sections/zh/} 下的文件替换。
+\printbibliography[title={\SAIReportBibliographyName},heading=bibintoc]
 
-\section{方法}
-\label{sec:method}
-
-这里写方法与证据链。
-
-\section{结论}
-\label{sec:conclusion}
-
-这里写结论、限制与下一步工作。
+\appendix
+\input{sections/zh/appendix}
 
 \end{document}

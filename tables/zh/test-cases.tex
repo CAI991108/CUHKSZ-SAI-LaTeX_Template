@@ -1,0 +1,18 @@
+\begin{longtable}{|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}p{6.0cm}|}
+  \caption{补充测试用例与结果}\label{tab:test-cases}\\
+  \hline
+  \textbf{用例} & \textbf{文档特征} & \textbf{观察到的行为} \\ \hline
+  \endfirsthead
+  \caption[]{补充测试用例与结果（续）}\\
+  \hline
+  \textbf{用例} & \textbf{文档特征} & \textbf{观察到的行为} \\ \hline
+  \endhead
+  TC-01 & 单主题、长文档 & 自动通过；证据片段完整。 \\ \hline
+  TC-02 & 单主题、短文档 & 证据缺失，转人工。 \\ \hline
+  TC-03 & 混合两个主题 & 模型只给一个标签，人工拆分。 \\ \hline
+  TC-04 & 混合两个主题 & 模型分数接近阈值，转人工。 \\ \hline
+  TC-05 & 标签歧义 & 人工推翻，记录理由。 \\ \hline
+  TC-06 & 模板化文档 & 自动通过；需人工抽查。 \\ \hline
+  TC-07 & 含表格的文档 & 声明抽取只覆盖正文，遗漏表格。 \\ \hline
+  TC-08 & 超长文档 & 分块后证据片段不连续，转人工。 \\ \hline
+\end{longtable}

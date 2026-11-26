@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+  \centering
+  \formaltable
+  \begin{tabularx}{\textwidth}{|B|Y|}
+    \hline
+    \textbf{组件} & \textbf{职责} \\ \hline
+    文档接入 & 读取文档与元数据，检查格式与授权字段。 \\ \hline
+    分类器 & 给出主题标签与置信度；不直接拒绝文档。 \\ \hline
+    声明抽取器 & 返回支持标签的原文片段与位置。 \\ \hline
+    人工审阅 & 接受、修改或拒绝提议；最终标签由人决定。 \\ \hline
+    审计记录 & 追加模型输出、审阅动作、时间与理由。 \\ \hline
+  \end{tabularx}
+  \caption{系统组件与职责。}
+  \label{tab:components}
+\end{table}

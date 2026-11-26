@@ -1,0 +1,23 @@
+\section{实现}
+\label{sec:implementation}
+
+\subsection{架构与可复现性}
+\label{sec:architecture}
+
+原型用 Python 3.11 实现，依赖锁定在 \texttt{requirements.txt}，随机种子与配置文件
+一并提交。核心分流逻辑只有一个小模块；审阅界面是命令行工具，便于在无图形环境的服务器
+上复现。图~\ref{fig:pipeline} 中的每个阶段都有独立测试，审计记录写成 JSON Lines，
+一行一个动作。
+
+下面的函数是分流逻辑的最小示例：模型分数高于阈值且存在证据片段时自动通过，否则进入
+人工审阅。
+
+\inputminted[fontsize=\footnotesize]{python}{code/example.py}
+
+\subsection{组件与职责}
+\label{sec:components}
+
+表~\ref{tab:components} 列出主要组件及其职责。组件之间的接口是显式的：分类器只返回
+标签与分数，声明抽取器只返回原文片段与位置，审计记录只追加、不修改。
+
+\input{tables/zh/components}

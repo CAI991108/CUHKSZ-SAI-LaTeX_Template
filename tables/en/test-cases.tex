@@ -1,0 +1,18 @@
+\begin{longtable}{|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}p{6.0cm}|}
+  \caption{Supplementary test cases and results}\label{tab:test-cases}\\
+  \hline
+  \textbf{Case} & \textbf{Document feature} & \textbf{Observed behaviour} \\ \hline
+  \endfirsthead
+  \caption[]{Supplementary test cases and results (continued)}\\
+  \hline
+  \textbf{Case} & \textbf{Document feature} & \textbf{Observed behaviour} \\ \hline
+  \endhead
+  TC-01 & Single topic, long document & Auto-pass; evidence spans complete. \\ \hline
+  TC-02 & Single topic, short document & Missing evidence; routed to review. \\ \hline
+  TC-03 & Mixed two topics & Model emits one label; reviewer splits. \\ \hline
+  TC-04 & Mixed two topics & Score near threshold; routed to review. \\ \hline
+  TC-05 & Ambiguous label & Reviewer overrides; reason recorded. \\ \hline
+  TC-06 & Template-like document & Auto-pass; needs spot-check. \\ \hline
+  TC-07 & Document with tables & Claim extraction covers prose only; table missed. \\ \hline
+  TC-08 & Very long document & Spans discontinuous after chunking; routed to review. \\ \hline
+\end{longtable}

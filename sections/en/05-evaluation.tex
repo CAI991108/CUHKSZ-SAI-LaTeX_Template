@@ -1,0 +1,54 @@
+\section{Evaluation}
+\label{sec:evaluation}
+
+\subsection{Test Design}
+\label{sec:test-design}
+
+The evaluation is a small internal pilot, not a user study. Two reviewers each processed 48
+documents: half through the manual workflow first, half through the assisted workflow first,
+with the order randomised to reduce learning effects. We recorded three measures: median
+review time, the share of model proposals overridden by the reviewer, and evidence
+completeness (the share of final labels for which the review record contains a supporting
+text span). All documents are synthetic; the evaluation involves no real individuals.
+
+\subsection{Results}
+\label{sec:results}
+
+Table~\ref{tab:results} summarises the results. The assistant reduced the median review time
+from 6.5 to 3.8 minutes and raised evidence completeness from 62\% to 91\%. The cost was 9
+overrides out of 48 items, an override rate of 18.8\%. That number should not be read as
+``the model is 81.2\% accurate'': an override happens whenever the model and the reviewer
+disagree, and the disagreement can be a model error or a reviewer changing their judgement.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lccc}
+    \toprule
+    Metric & Manual & Assisted & Change \\
+    \midrule
+    Median review time (min) & 6.5 & 3.8 & $-42\%$ \\
+    Reviewer override rate & -- & 18.8\% & -- \\
+    Evidence completeness & 62\% & 91\% & $+29$ pp \\
+    \bottomrule
+  \end{tabular}
+  \caption{Results from the small internal pilot. The sample is 48 synthetic documents
+  reviewed by two reviewers.}
+  \label{tab:results}
+\end{table}
+
+\subsection{Failure Cases}
+\label{sec:failures}
+
+The failures cluster into three groups:
+\begin{itemize}
+  \item \textbf{Mixed topics.} When a document covers two topics, the model emits one label
+        and the reviewer has to split it;
+  \item \textbf{Missing evidence.} A very short document receives a high score but has no
+        usable text span;
+  \item \textbf{Ambiguous labels.} The boundary between two topics is genuinely unclear, so
+        the disagreement cannot be attributed to a model error.
+\end{itemize}
+
+Table~\ref{tab:test-cases} in the appendix lists the individual test records. We keep these
+failure cases rather than reporting only the successful sample, because a reviewer needs to
+know when the system is unreliable.

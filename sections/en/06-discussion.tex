@@ -1,0 +1,27 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Ethics and Accountability}
+\label{sec:ethics}
+
+The system leaves the final decision to a human reviewer. That is a deliberate design
+choice. Automatic rejection would save time, but it would also hide responsibility inside the
+pipeline; in human-in-the-loop review, responsibility must land on a specific person and a
+specific decision. The audit trail is therefore not an add-on but part of the system: it
+records the model proposal, the reviewer's action, the time and the reason, so that the
+decision can be reviewed afterwards.
+
+We follow data minimisation: the evaluation uses synthetic documents only. A real deployment
+should first settle data authorisation, de-identification and retention limits. Model cards
+and datasheets should be maintained with the system \cite{mitchell2019,gebru2021}, not
+written only when an audit arrives.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+The evaluation has three clear limits. First, the corpus is synthetic and small, with only
+two topics, so the time saving may not generalise to real documents. Second, there are only
+two reviewers, and reviewer differences are not analysed separately. Third, the evaluation
+does not cover automation bias over time: reviewers may gradually reduce their independent
+judgement. The next step needs a larger and more varied corpus, and a longitudinal
+observation period.

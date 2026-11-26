@@ -1,0 +1,16 @@
+\section{Supplementary Material}
+\label{app:cases}
+
+This appendix lists the individual test records and the reproduction commands.
+Table~\ref{tab:test-cases} is a subset of the 48 documents used in the evaluation; the full
+records and audit log can be regenerated from the example repository.
+
+\input{tables/en/test-cases}
+
+The minimal reproduction commands are below (example project layout; replace the entry point
+with your own):
+
+\begin{minted}[fontsize=\footnotesize]{bash}
+python -m pip install -r requirements.txt
+python -m triage.run --config configs/pilot.yaml --seed 7
+\end{minted}

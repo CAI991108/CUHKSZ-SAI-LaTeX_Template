@@ -2,7 +2,7 @@
 %  main-en.tex — English report entry point
 %
 %  Edit metadata.tex first.  Add or remove sections by editing the \input
-%  lines at the bottom; the section bodies live in sections/en/.
+%  lines below; the section bodies live in sections/en/.
 % ============================================================================
 \documentclass[11pt]{article}
 
@@ -16,35 +16,28 @@
 
 \usepackage{styles/sai-report}
 
+\addbibresource{references.bib}
+
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
-This is a placeholder abstract. Use three to five sentences to state the problem,
-the method, the evidence a reader can verify, and the most important conclusion or
-limitation. Do not review the background here, and do not cite figure numbers.
-\end{abstract}
-
-\SAIReportKeywords{\SAIReportKeywordText}
+\input{frontmatter/en/abstract}
 
 \tableofcontents
 \clearpage
 
-\section{Introduction}
-\label{sec:introduction}
+\input{sections/en/01-introduction}
+\input{sections/en/02-related-work}
+\input{sections/en/03-method}
+\input{sections/en/04-implementation}
+\input{sections/en/05-evaluation}
+\input{sections/en/06-discussion}
+\input{sections/en/07-conclusion}
 
-Write the problem, motivation and the structure of the report here. The placeholder
-text is replaced by the files under \texttt{sections/en/} once the skeleton is in place.
+\printbibliography[title={\SAIReportBibliographyName},heading=bibintoc]
 
-\section{Method}
-\label{sec:method}
-
-Describe the method and the chain of evidence here.
-
-\section{Conclusion}
-\label{sec:conclusion}
-
-State the conclusions, limitations and next steps here.
+\appendix
+\input{sections/en/appendix}
 
 \end{document}

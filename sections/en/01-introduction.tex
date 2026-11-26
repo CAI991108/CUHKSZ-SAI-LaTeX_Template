@@ -1,0 +1,28 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Courses, editorial teams and small organisations decide every day which documents deserve
+further attention. Manual review is accurate but slow, because the reviewer must read and
+record the evidence; a purely automatic classifier is fast but hides the reason for its
+decision inside the model. When the decision affects authors, partners or the allocation of
+scarce attention, the reviewer needs more than a label: the evidence behind the label must
+remain inspectable.
+
+This report asks: \emph{in human-in-the-loop document triage, can we shorten review time
+while keeping the human decision and its supporting evidence inspectable?} We answer with a
+reproducible prototype rather than a new classification model.
+
+The contribution is threefold:
+\begin{itemize}
+  \item a three-stage review workflow: documents enter, the model proposes a label and
+        evidence, and a human accepts, edits or rejects the proposal;
+  \item a reproducible prototype with a pinned environment, a synthetic corpus, an audit
+        trail and documented failure cases;
+  \item a small internal evaluation reporting review time, override rate and evidence
+        completeness, together with the limits of that evaluation.
+\end{itemize}
+
+Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the
+method, Section~\ref{sec:implementation} covers implementation and reproducibility,
+Section~\ref{sec:evaluation} reports the evaluation, Section~\ref{sec:discussion} discusses
+ethics, accountability and limitations, and Section~\ref{sec:conclusion} concludes.

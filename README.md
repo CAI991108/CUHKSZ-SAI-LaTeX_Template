@@ -178,7 +178,12 @@ templates/sai-report/
 ├── main-zh.tex · main-en.tex                      中英报告入口
 ├── metadata.tex                                   标题/作者/课程/日期
 ├── styles/sai-report.sty                          共享样式
-├── sections/                                      正文章节（下一步）
+├── frontmatter/{zh,en}/                           摘要与关键词
+├── sections/{zh,en}/                              正文章节（中英同构）
+├── tables/{zh,en}/                                表格浮动体
+├── code/example.py                                minted 代码示例
+├── figures/                                       图与生成源
+├── references.bib                                 参考文献
 ├── docs/
 │   └── xelatex-notes.md                           踩坑与验证清单
 ├── figs/
@@ -194,7 +199,7 @@ templates/sai-report/
 
 > 课程专用的 AIE3905 Week 7 评分细则已迁到本仓库
 > [`docs/guidance/latex/week7-milestone/`](../../docs/guidance/latex/week7-milestone/)，
-> 不再属于模板。模板的入口与共享样式已就位，章节与示例正在重建（见本仓库 map #1）。
+> 不再属于模板。模板的入口、共享样式、章节与示例已就位；公开镜像的发布进度见本仓库 map #1。
 
 <details>
 <summary><b>为什么要把字体内置进仓库？</b></summary>
