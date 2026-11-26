@@ -52,6 +52,7 @@ PACKAGES=(
   etoolbox
   xcolor
   minted
+  listings
   csquotes
   biblatex
   biber

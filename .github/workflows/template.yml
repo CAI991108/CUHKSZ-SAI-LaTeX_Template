@@ -53,3 +53,30 @@ jobs:
           name: sai-report-template-logs
           path: tmp/*.log
           if-no-files-found: ignore
+
+  windows-parse:
+    name: Parse Windows build scripts
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Parse PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in @('scripts/build.ps1', 'scripts/setup-miktex.ps1')) {
+            $errors = $null
+            $tokens = $null
+            $path = [string](Resolve-Path $file)
+            [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $failed = $true
+              Write-Host "::error file=$file::$($errors[0].Message)"
+              $errors | ForEach-Object {
+                Write-Host ("  line " + $_.Extent.StartLineNumber + ": " + $_.Message)
+              }
+            }
+            else {
+              Write-Host "OK $file"
+            }
+          }
+          if ($failed) { exit 1 }

@@ -87,7 +87,7 @@ chmod +x scripts/*.sh
 ./scripts/setup-texlive.sh
 ```
 
-> 如果发行版已经装好 `xelatex`、`ctex`、`minted`、`biblatex`、`biber`，可以跳过这一步。
+> 如果发行版已经装好 `xelatex`、`ctex`、`minted`（或 `listings` fallback）、`biblatex`、`biber`，可以跳过这一步。
 > 两个脚本都是幂等的，只补缺失项。
 
 ### 4 · 编译
@@ -144,7 +144,7 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 │   ├── 07-conclusion.tex
 │   └── appendix.tex
 ├── tables/{zh,en}/                     # formal table + longtable
-├── code/example.py                     # minted 代码示例
+├── code/example.py                     # 代码示例（minted / listings）
 ├── figures/                            # 示例图（含可重生成的 TikZ 源）
 ├── references.bib                      # biblatex / biber
 ├── docs/xelatex-notes.md               # XeLaTeX 踩坑与验证清单
@@ -154,7 +154,7 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # 装宏包 + Pygments
 │   ├── build.ps1 · build.sh                   # 编译 + 日志门禁 + biber
 │   └── check-parity.py                        # 中英结构比对
-├── .github/workflows/template.yml      # 公开镜像的 CI（在镜像根目录运行）
+├── .github/                            # 公开镜像 CI（workflows/template.yml）+ dependabot
 ├── .vscode/settings.json               # LaTeX Workshop recipe
 ├── CONTRIBUTING.md · NOTICE.md         # 发布检查清单 + 许可说明
 ├── .gitattributes · .gitignore · LICENSE
@@ -185,7 +185,7 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 - **表。** 普通表用 `table` + `\formaltable` + `tabularx`（`Y` 列自动换行）；结果表
   可以用 `booktabs`；跨页表用 `longtable`，用 `\endhead` 重复表头，不要给
   `\endfoot` 只放一个 `\hline`。
-- **代码。** 用 `minted`，需要 `-shell-escape` 与 Pygments；构建脚本已经传好参数。
+- **代码。** 默认用 `minted`，需要 `-shell-escape` 与 Pygments；构建脚本已经传好参数。如果环境不允许 shell-escape（例如部分 Overleaf 套餐），加载样式时加 `plaincode`，改用 `listings`，不需要 Pygments：`\usepackage[cjk,plaincode]{styles/sai-report}`。
   示例见 `code/example.py` 与 `sections/*/04-implementation.tex`。
 - **引用。** `biblatex` numeric + `biber`；正文写 `\cite{key}`，入口里已经调用
   `\printbibliography`。
@@ -233,7 +233,7 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
 | `headheight is too small` | 抬头图高于 18.5mm；改 `styles/sai-report.sty` 的 geometry 或用 `[nologo]` |
 | `Overfull` / `Underfull` | 构建会失败；检查窄列、长 URL、不可断词或表格列宽 |
 | Windows 不能运行 `.ps1` | 用 `scripts\build.cmd` / `scripts\setup.cmd` |
-| Overleaf | 需要 XeLaTeX + `-shell-escape` + 仓库内字体；minted 在部分套餐受限，必要时改用 `verbatim` |
+| Overleaf | 需要 XeLaTeX + 仓库内字体；如果 minted/shell-escape 受限，加载样式时加 `plaincode`（`\usepackage[cjk,plaincode]{styles/sai-report}`），代码块改用 `listings` |
 
 ## 发布与版本
 

@@ -10,20 +10,24 @@
 %      cjk     load ctex + the vendored Noto CJK fonts (Chinese documents)
 %      nologo  no letterhead/logo; the header is suppressed and the top margin
 %              is reduced. Useful when you do not have the SAI letterhead.
+%      plaincode  use listings instead of minted (no shell-escape/Pygments;
+%              useful on Overleaf plans that block shell-escape)
 %
 %  Everything a student normally edits lives in metadata.tex, not here.
 % ============================================================================
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{sai-report}[2026/11/26 v1.0 SAI report template]
+\ProvidesPackage{sai-report}[2026/11/26 v1.1 SAI report template]
 
 % ---------------------------------------------------------------------------
 %  Options
 % ---------------------------------------------------------------------------
 \newif\ifSAI@cjk
 \newif\ifSAI@logo
+\newif\ifSAI@plaincode
 \SAI@logotrue
 \DeclareOption{cjk}{\SAI@cjktrue}
 \DeclareOption{nologo}{\SAI@logofalse}
+\DeclareOption{plaincode}{\SAI@plaincodetrue}
 \DeclareOption*{\PackageWarning{sai-report}{Unknown option '\CurrentOption'}}
 \ProcessOptions\relax
 
@@ -161,7 +165,11 @@
 \RequirePackage{enumitem}
 \RequirePackage{needspace}
 \RequirePackage{etoolbox}
-\RequirePackage{minted}
+\ifSAI@plaincode
+    \RequirePackage{listings}
+\else
+    \RequirePackage{minted}
+\fi
 \RequirePackage{csquotes}
 \RequirePackage[style=numeric,backend=biber,sorting=none,maxbibnames=99]{biblatex}
 \RequirePackage[hidelinks]{hyperref}
@@ -284,15 +292,36 @@
 % ---------------------------------------------------------------------------
 %  Code
 % ---------------------------------------------------------------------------
-\setminted{
-    frame=lines,
-    framesep=2mm,
-    baselinestretch=1.2,
-    bgcolor=lightgray!10,
-    fontsize=\footnotesize,
-    linenos=true,
-    breaklines=true,
-    breakanywhere=true,
-    tabsize=4
-}
+\ifSAI@plaincode
+    \lstset{
+        basicstyle=\ttfamily\footnotesize,
+        frame=lines,
+        framexleftmargin=2mm,
+        numbers=left,
+        numberstyle=\tiny\color{gray},
+        breaklines=true,
+        breakatwhitespace=false,
+        columns=fullflexible,
+        keepspaces=true,
+        showstringspaces=false,
+        tabsize=4,
+        backgroundcolor=\color{lightgray!10}
+    }
+    % minted-compatible commands backed by listings.  The optional argument is
+    % accepted but ignored; the listings style above sets the font and frame.
+    \newcommand{\inputminted}[3][]{\lstinputlisting[language=#2]{#3}}
+    \newenvironment{minted}[2][]{\begin{lstlisting}[language=#2]}{\end{lstlisting}}
+\else
+    \setminted{
+        frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        bgcolor=lightgray!10,
+        fontsize=\footnotesize,
+        linenos=true,
+        breaklines=true,
+        breakanywhere=true,
+        tabsize=4
+    }
+\fi
 \newcommand{\codeblock}[1]{\colorbox{gray!10}{\texttt{#1}}}

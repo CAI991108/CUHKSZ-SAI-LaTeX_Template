@@ -90,8 +90,9 @@ chmod +x scripts/*.sh
 ./scripts/setup-texlive.sh
 ```
 
-> Skip this step if your distribution already has `xelatex`, `ctex`, `minted`,
-> `biblatex` and `biber`. Both scripts are idempotent and only add what is missing.
+> Skip this step if your distribution already has `xelatex`, `ctex`, `minted` (or the
+> `listings` fallback), `biblatex` and `biber`. Both scripts are idempotent and only add
+> what is missing.
 
 ### 4 · Build
 
@@ -150,7 +151,7 @@ templates/sai-report/                   # the repository root in the public mirr
 │   ├── 07-conclusion.tex
 │   └── appendix.tex
 ├── tables/{zh,en}/                     # formal table + longtable
-├── code/example.py                     # minted example
+├── code/example.py                     # code example (minted / listings)
 ├── figures/                            # example figure (with regenerable TikZ source)
 ├── references.bib                      # biblatex / biber
 ├── docs/xelatex-notes.md               # XeLaTeX pitfalls and verification checklist
@@ -160,7 +161,7 @@ templates/sai-report/                   # the repository root in the public mirr
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # packages + Pygments
 │   ├── build.ps1 · build.sh                   # build + log gate + biber
 │   └── check-parity.py                        # ZH/EN structural comparison
-├── .github/workflows/template.yml      # public-mirror CI (runs at the mirror root)
+├── .github/                            # public-mirror CI (workflows/template.yml) + dependabot
 ├── .vscode/settings.json               # LaTeX Workshop recipe
 ├── CONTRIBUTING.md · NOTICE.md         # release checklist + licence notices
 ├── .gitattributes · .gitignore · LICENSE
@@ -193,8 +194,11 @@ templates/sai-report/                   # the repository root in the public mirr
 - **Tables.** Use `table` + `\formaltable` + `tabularx` (the `Y` column wraps) for
   formal tables; `booktabs` for results; `longtable` with `\endhead` for tables that
   break across pages. Do not put only an `\hline` in `\endfoot`.
-- **Code.** Use `minted`; it needs `-shell-escape` and Pygments, both handled by the
-  build scripts. See `code/example.py` and `sections/*/04-implementation.tex`.
+- **Code.** The default is `minted`, which needs `-shell-escape` and Pygments; the build
+  scripts handle both. If the environment blocks shell-escape (some Overleaf plans), add
+  `plaincode` to the style options: `\usepackage[plaincode]{styles/sai-report}`; code
+  blocks then use `listings` and Pygments is not needed. See `code/example.py` and
+  `sections/*/04-implementation.tex`.
 - **Citations.** `biblatex` numeric + `biber`; write `\cite{key}`; the entry points call
   `\printbibliography`.
 - **Appendix.** Use `\section{...}` after `\appendix`; the example is "Supplementary
@@ -246,7 +250,7 @@ To use the template for a course report, either:
 | `headheight is too small` | The letterhead is taller than 18.5mm; adjust geometry in `styles/sai-report.sty` or use `[nologo]` |
 | `Overfull` / `Underfull` | The build fails; check narrow columns, long URLs, unbreakable words or column widths |
 | Windows refuses to run `.ps1` | Use `scripts\build.cmd` / `scripts\setup.cmd` |
-| Overleaf | Needs XeLaTeX + `-shell-escape` + the vendored fonts; minted may be limited on some plans, in which case switch to `verbatim` |
+| Overleaf | Needs XeLaTeX + the vendored fonts; if minted/shell-escape is blocked, add `plaincode` to the style options (`\usepackage[plaincode]{styles/sai-report}`) and code blocks use `listings` |
 
 ## Release and versions
 
