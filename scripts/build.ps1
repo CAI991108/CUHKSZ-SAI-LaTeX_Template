@@ -98,6 +98,11 @@ else {
 }
 
 $outDirFull = [System.IO.Path]::GetFullPath($outDir)
+
+# minted v3 asks Pygments for the output directory through TEXMF_OUTPUT_DIRECTORY.
+# TeX Live 2024+ derives it from -output-directory; MiKTeX does not, so without
+# this line every minted block fails with "could not find output directory".
+$env:TEXMF_OUTPUT_DIRECTORY = $outDirFull
 $repoRootFull = [System.IO.Path]::GetFullPath($repoRoot)
 if (-not $outDirFull.StartsWith($repoRootFull, [System.StringComparison]::OrdinalIgnoreCase)) {
     if ($Clean) {

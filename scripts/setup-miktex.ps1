@@ -31,13 +31,36 @@ function Write-Pass { param([string]$Text) Write-Host "    ok    $Text" -Foregro
 function Write-Note { param([string]$Text) Write-Host "    note  $Text" -ForegroundColor Yellow }
 function Write-Fail { param([string]$Text) Write-Host "    FAIL  $Text" -ForegroundColor Red }
 
+# MiKTeX writes progress, warnings and "unknown package" notices to stderr.
+# This script runs with $ErrorActionPreference = 'Stop', and Windows PowerShell
+# 5.1 turns redirected native stderr into a terminating NativeCommandError, so a
+# single unknown package id would abort the whole setup instead of being
+# reported.  Run native commands with 'Continue' and keep their exit code.
+function Invoke-MiktexCommand {
+    param([string]$Exe, [string[]]$Arguments)
+    $saved = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = & $Exe @Arguments 2>&1
+        $code = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $saved
+    }
+    return [pscustomobject]@{
+        Output   = ($output -join ' ')
+        ExitCode = $code
+    }
+}
+
 # ---------------------------------------------------------------------------
 #  MiKTeX package IDs.
 #  MiKTeX resolves transitive dependencies on its own, so only the directly
 #  used packages are listed here.
 #  latex-tools -> array.sty + tabularx.sty + longtable.sty,
 #  graphics -> graphicx.sty, lm / lm-math -> Latin Modern OpenType fonts,
-#  ctex -> xeCJK + zhnumber, biblatex + biber -> bibliography,
+#  ctex -> xeCJK + zhnumber, biblatex -> bibliography (biber is resolved
+#  separately below, because its package id is architecture specific),
 #  latexmk -> the VS Code recipe.
 # ---------------------------------------------------------------------------
 $packages = @(
@@ -119,27 +142,55 @@ if (-not ($newCli -or $oldCli)) {
 }
 if (-not $newCli) { Write-Note 'old MiKTeX (mpm) detected; falling back to --install=<id>' }
 
+$packageFailures = 0
 foreach ($pkg in $packages) {
-    if ($newCli) {
-        $probe = & $miktex packages info $pkg 2>&1
-        if ($probe -match 'isInstalled: true') {
-            Write-Pass "$pkg (already installed)"
-            continue
-        }
-        $output = & $miktex packages install $pkg 2>&1
+    # Recent MiKTeX releases publish biber per architecture; there is no plain
+    # "biber" package id any more, so probe the known ids instead of assuming
+    # one name that a given MiKTeX version may not know.
+    $candidates = if ($pkg -eq 'biber') {
+        @('biber-windows-x64', 'biber-ms-windows-x64', 'biber')
     }
     else {
-        $output = & $mpm "--install=$pkg" 2>&1
+        @($pkg)
     }
 
-    if ($LASTEXITCODE -eq 0) {
-        Write-Pass "$pkg installed"
+    $installed = $false
+    $detail = ''
+    foreach ($id in $candidates) {
+        if ($newCli) {
+            $probe = Invoke-MiktexCommand $miktex @('packages', 'info', $id)
+            if ($probe.Output -match 'isInstalled: true') {
+                Write-Pass "$id (already installed)"
+                $installed = $true
+                break
+            }
+            if ($probe.ExitCode -ne 0) {
+                # Unknown package id for this MiKTeX version: try the next one.
+                $detail = "$id -> $($probe.Output)"
+                continue
+            }
+            $result = Invoke-MiktexCommand $miktex @('packages', 'install', $id)
+        }
+        else {
+            $result = Invoke-MiktexCommand $mpm @("--install=$id")
+        }
+
+        if ($result.ExitCode -eq 0) {
+            Write-Pass "$id installed"
+            $installed = $true
+            break
+        }
+        if ($result.Output -match 'already installed') {
+            Write-Pass "$id (already installed)"
+            $installed = $true
+            break
+        }
+        $detail = "$id -> $($result.Output)"
     }
-    elseif ($output -match 'already installed') {
-        Write-Pass "$pkg (already installed)"
-    }
-    else {
-        Write-Fail "$pkg -> $($output -join ' ')"
+
+    if (-not $installed) {
+        Write-Fail "$pkg -> $detail"
+        $packageFailures++
     }
 }
 
@@ -210,11 +261,19 @@ else {
 }
 
 Write-Host ''
-if ($missingAssets -eq 0) {
-    Write-Host 'Setup finished.  Build the documents with:' -ForegroundColor Green
-    Write-Host '    .\scripts\build.ps1 -All'
-}
-else {
+$failed = $false
+if ($missingAssets -gt 0) {
     Write-Host "$missingAssets asset(s) are missing - restore them before building." -ForegroundColor Red
+    $failed = $true
+}
+if ($packageFailures -gt 0) {
+    Write-Host "$packageFailures LaTeX package(s) could not be installed - the build will probably fail." -ForegroundColor Red
+    $failed = $true
+}
+
+if ($failed) {
     exit 1
 }
+
+Write-Host 'Setup finished.  Build the documents with:' -ForegroundColor Green
+Write-Host '    .\scripts\build.ps1 -All'
