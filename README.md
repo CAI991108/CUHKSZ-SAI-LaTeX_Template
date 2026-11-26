@@ -68,7 +68,7 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 <br>
 
 - 定位 `xelatex`，找不到时给出安装指引并明确报错。
-- 安装两份文档需要的 22 个 LaTeX 宏包；先用 `miktex packages info` 探测，
+- 安装模板入口需要的 LaTeX 宏包；先用 `miktex packages info` 探测，
   因为 MiKTeX 会把「重复安装已装包」当作错误。
 - 检查 `pygmentize`，缺失时用 `pip` 安装 Pygments。
 - 校验内置字体、抬头图与 `fonts/LICENSE.txt` 是否齐全。
@@ -77,9 +77,9 @@ chmod +x scripts/*.sh && ./scripts/setup-texlive.sh    # macOS / Linux
 
 </details>
 
-XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。随后编译脚本从 `.log`
-中统计错误数、过满/欠满盒子数与缺字数，不干净时返回非零退出码 ——
-所以坏掉的编译结果不可能悄悄蒙混过关。
+XeLaTeX 至少跑两遍，让 `hyperref` 的书签与页码标签收敛；如果文档有参考文献，
+第一遍之后会运行 `biber`，再补两遍 XeLaTeX。编译脚本随后从 `.log` 中统计
+错误数、过满/欠满盒子数与缺字数——三项全为零才算干净，否则返回非零退出码。
 
 中文版以 `ctex` 的 `fontset=none` 搭配本项目内置的 Noto CJK **OpenType** 字体；
 英文版则用 `fontspec` 与 `unicode-math` 调用 Latin Modern。这些都需要支持 OpenType
@@ -98,17 +98,17 @@ XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。�
 | 编译 | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>B</kbd> |
 | 查看 PDF | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd> |
 
-- 默认 recipe：**`xelatex x2 (CJK)`** · 输出目录：`tmp/` · SyncTeX 正反向搜索已启用。
+- 默认 recipe：**`latexmk (xelatex + biber)`** · 输出目录：`tmp/` · SyncTeX 正反向搜索已启用。
 - magic comment 被刻意**关闭**，因此 `% !TEX program = xelatex` 只是注释说明，不参与构建。
 
 ### 命令行
 
 | Windows | macOS / Linux | 作用 |
 | --- | --- | --- |
-| `.\scripts\build.ps1` | `./scripts/build.sh` | 编译中文版 |
-| `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | 编译两份 |
-| `.\scripts\build.ps1 -Clean` | `./scripts/build.sh --clean` | 先清空 `tmp/` |
-| `.\scripts\build.ps1 -Document <名称>` | `./scripts/build.sh <名称>` | 按文件名编译单份 |
+| `.\scripts\build.ps1` | `./scripts/build.sh` | 编译全部 `main-*.tex` |
+| `.\scripts\build.ps1 -All` | `./scripts/build.sh --all` | 显式编译全部 |
+| `.\scripts\build.ps1 -Document main-en` | `./scripts/build.sh --doc main-en` | 编译单份 |
+| `.\scripts\build.ps1 -Clean -All` | `./scripts/build.sh --clean --all` | 先清空输出目录 |
 | `.\scripts\build.cmd` | — | 同 `build.ps1`，参数一致（见下方说明） |
 
 > 💡 Windows 上 PowerShell 可能以「未数字签名」为由拒绝执行仓库里的 `.ps1`。
@@ -120,13 +120,19 @@ XeLaTeX 会连跑**两遍**，让 `hyperref` 的书签与页码标签收敛。�
 
 <br>
 
-```powershell
-xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
-        -output-directory=./tmp AIE3905_Week7_Milestone_Grading_Standard.tex
+```bash
+mkdir -p tmp
+xelatex -synctex=1 -shell-escape -interaction=nonstopmode \
+        -file-line-error -output-directory=./tmp main-zh.tex
+biber --input-directory=./tmp --output-directory=./tmp main-zh
+xelatex -synctex=1 -shell-escape -interaction=nonstopmode \
+        -file-line-error -output-directory=./tmp main-zh.tex
+xelatex -synctex=1 -shell-escape -interaction=nonstopmode \
+        -file-line-error -output-directory=./tmp main-zh.tex
 ```
 
-请**连跑两遍**，把 `-output-directory=./tmp` 保持为一个完整参数，并始终在仓库根目录执行 ——
-文档以 `./figs/...`、`./fonts/...` 相对路径引用资源。
+请始终在模板根目录执行，并把 `-output-directory=./tmp` 保持为一个完整参数——
+文档以 `./fonts/`、`./figures/` 相对路径引用资源。
 
 </details>
 
@@ -137,32 +143,21 @@ xelatex -synctex=1 -shell-escape -interaction=nonstopmode -file-line-error `
 配置脚本安装的是下面这些发行版包名，而不是 `\usepackage` 的名字。
 
 <details open>
-<summary><b>共 22 个宏包</b></summary>
+<summary><b>包列表</b></summary>
 
 <br>
 
-| `\usepackage` | MiKTeX / TeX Live 包名 | 提供内容 |
-| --- | --- | --- |
-| —（引擎） | `xetex` | `xelatex.exe` |
-| —（引擎） | `l3kernel`、`l3packages` | LaTeX3 编程层 |
-| `array`、`tabularx` | `latex-tools`（`tools`） | 标准工具包 |
-| — | `latex-fonts`（`fix-cm`） | CM 字体修正 |
-| `bookmark` | `bookmark` | PDF 书签驱动 |
-| `fontspec` | `fontspec` | OpenType 字体选择 |
-| `amsmath` | `amsmath` | 数学排版 |
-| `unicode-math` | `unicode-math` | OpenType 数学 |
-| `ctex` | `ctex` | 中文支持（`xeCJK`、`zhnumber`） |
-| `xltabular` | `xltabular` | 跨页续排的表格（表头自动重复） |
-| `needspace` | `needspace` | 分页控制 |
-| `geometry` | `geometry` | 页面布局 |
-| `minted` | `minted` | 代码块 |
-| `xcolor` | `xcolor` | 颜色 |
-| `graphicx` | `graphics` | `\includegraphics` |
-| `titling` | `titling` | 标题块控制 |
-| `enumitem` | `enumitem` | 列表定制 |
-| `fancyhdr` | `fancyhdr` | 页眉页脚 |
-| `hyperref` | `hyperref` | 超链接与 PDF 元数据 |
-| —（字体） | `lm`、`lm-math` | Latin Modern OpenType |
+| 用途 | MiKTeX / TeX Live 包名 |
+| --- | --- |
+| 引擎与 LaTeX3 | `xetex`、`l3kernel`、`l3packages` |
+| 字体 | `fontspec`、`lm`、`lm-math`、`ctex` |
+| 数学 | `amsmath`、`unicode-math` |
+| 页面、页眉与列表 | `geometry`、`fancyhdr`、`etoolbox`、`enumitem`、`needspace` |
+| 表格 | `tools`（`array`、`tabularx`、`longtable`）、`booktabs`、`float`、`caption` |
+| 图、颜色与代码 | `graphics`、`xcolor`、`minted` |
+| 引用 | `csquotes`、`biblatex`、`biber` |
+| 链接与书签 | `hyperref`、`bookmark` |
+| 编辑器 | `latexmk` |
 
 </details>
 

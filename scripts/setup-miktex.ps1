@@ -5,9 +5,10 @@
 
 .DESCRIPTION
     * locates the MiKTeX installation (PATH first, then the default install dirs)
-    * installs the LaTeX packages that the two documents pull in
+    * installs the LaTeX packages that the report entry points use
     * makes sure Pygments is available so that minted code blocks keep working
     * verifies that the CJK fonts vendored in fonts/ are still present
+    * reports a missing letterhead without failing (nologo is supported)
 
     The script is idempotent: re-running it only reports what is already in place.
 
@@ -33,34 +34,40 @@ function Write-Fail { param([string]$Text) Write-Host "    FAIL  $Text" -Foregro
 # ---------------------------------------------------------------------------
 #  MiKTeX package IDs.
 #  MiKTeX resolves transitive dependencies on its own, so only the directly
-#  \usepackage'd packages (plus the two font packages) are listed here.
-#  latex-tools -> array.sty + tabularx.sty, xltabular -> longtable + tabularx
-#  (tables that break across pages), graphics -> graphicx.sty,
-#  lm / lm-math -> the OpenType Latin Modern fonts, ctex -> xeCJK + zhnumber.
+#  used packages are listed here.
+#  latex-tools -> array.sty + tabularx.sty + longtable.sty,
+#  graphics -> graphicx.sty, lm / lm-math -> Latin Modern OpenType fonts,
+#  ctex -> xeCJK + zhnumber, biblatex + biber -> bibliography,
+#  latexmk -> the VS Code recipe.
 # ---------------------------------------------------------------------------
 $packages = @(
     'xetex',
     'l3kernel',
     'l3packages',
-    'latex-tools',
-    'xltabular',
-    'latex-fonts',
-    'bookmark',
     'fontspec',
     'amsmath',
     'unicode-math',
-    'ctex',
-    'needspace',
-    'geometry',
-    'minted',
-    'xcolor',
-    'graphics',
-    'titling',
-    'enumitem',
-    'fancyhdr',
-    'hyperref',
     'lm',
-    'lm-math'
+    'lm-math',
+    'ctex',
+    'geometry',
+    'fancyhdr',
+    'graphics',
+    'latex-tools',
+    'booktabs',
+    'float',
+    'caption',
+    'enumitem',
+    'needspace',
+    'etoolbox',
+    'xcolor',
+    'minted',
+    'csquotes',
+    'biblatex',
+    'biber',
+    'hyperref',
+    'bookmark',
+    'latexmk'
 )
 
 # ---------------------------------------------------------------------------
@@ -179,8 +186,7 @@ $assets = @(
     'fonts\NotoSerifSC-Bold.otf',
     'fonts\NotoSansSC-Regular.otf',
     'fonts\NotoSansSC-Bold.otf',
-    'fonts\LICENSE.txt',
-    'figs\cuhk-sai-logo01.png'
+    'fonts\LICENSE.txt'
 )
 $missingAssets = 0
 foreach ($asset in $assets) {
@@ -192,6 +198,14 @@ foreach ($asset in $assets) {
         Write-Fail "missing: $asset"
         $missingAssets++
     }
+}
+
+if (Test-Path -LiteralPath (Join-Path $repoRoot 'figs\cuhk-sai-logo01.png')) {
+    Write-Pass 'figs\cuhk-sai-logo01.png'
+}
+else {
+    Write-Note 'figs\cuhk-sai-logo01.png is missing.'
+    Write-Note 'Add the letterhead back, or set \SAIReportLogo{} and load the style with [nologo].'
 }
 
 Write-Host ''

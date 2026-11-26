@@ -1,50 +1,58 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Build the template documents with XeLaTeX.
+    Build the SAI report template with XeLaTeX on Windows.
 
 .DESCRIPTION
-    Both documents must be built with XeLaTeX - the Chinese one needs ctex with
-    the vendored Noto CJK fonts, and pdfLaTeX cannot handle either of them.
-    XeLaTeX is run twice so that cross references settle.
+    Entry points are discovered automatically: every main-*.tex in the template
+    root is a document.  The Chinese entry needs ctex with the vendored Noto CJK
+    fonts; the English entry only needs the Latin Modern OpenType fonts.  Both
+    need XeLaTeX and minted (Pygments); documents with a bibliography also need
+    biber.
 
-    Output goes to tmp\ because that is what .vscode/settings.json tells the
-    LaTeX Workshop PDF viewer to open.
+    XeLaTeX runs twice so that cross references settle.  When a .bcf file
+    appears, biber runs between the first and second pass and a third XeLaTeX
+    pass is added so that the bibliography settles.
+
+    A document is clean only when its log has zero real errors, zero
+    overfull/underfull boxes and zero missing characters.  Any failure returns a
+    non-zero exit code.
 
 .PARAMETER Document
-    Base name of a single document, without the .tex extension.
-    Defaults to the Chinese version.
+    Base name of one document, without the .tex extension.
 
 .PARAMETER All
-    Build both the Chinese and the English document.
+    Build every main-*.tex entry point (the default when -Document is omitted).
 
 .PARAMETER Clean
-    Empty tmp\ before building.
+    Empty the output directory before building.
+
+.PARAMETER OutDir
+    Output directory, relative to the template root.  Defaults to tmp.
 
 .EXAMPLE
     .\scripts\build.ps1 -All
 .EXAMPLE
-    .\scripts\build.ps1 -Document AIE3905_Week7_Milestone_Grading_Standard_EN -Clean
+    .\scripts\build.ps1 -Document main-en
+.EXAMPLE
+    .\scripts\build.ps1 -Clean -All
 #>
 [CmdletBinding()]
 param(
-    [string]$Document = 'AIE3905_Week7_Milestone_Grading_Standard',
+    [string]$Document = '',
     [switch]$All,
-    [switch]$Clean
+    [switch]$Clean,
+    [string]$OutDir = 'tmp'
 )
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$outDir   = Join-Path $repoRoot 'tmp'
 
-$allDocs = @(
-    'AIE3905_Week7_Milestone_Grading_Standard',
-    'AIE3905_Week7_Milestone_Grading_Standard_EN'
-)
-
-$searchDirs = @()
-foreach ($base in @($env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)})) {
-    if ($base) { $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64') }
+if ([System.IO.Path]::IsPathRooted($OutDir)) {
+    $outDir = $OutDir
+}
+else {
+    $outDir = Join-Path $repoRoot $OutDir
 }
 
 function Resolve-Tool {
@@ -58,14 +66,45 @@ function Resolve-Tool {
     return $null
 }
 
+$searchDirs = @()
+foreach ($base in @($env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)})) {
+    if ($base) { $searchDirs += (Join-Path $base 'MiKTeX\miktex\bin\x64') }
+}
+
 $xelatex = Resolve-Tool 'xelatex.exe' $searchDirs
 if (-not $xelatex) {
     Write-Host 'xelatex was not found.  Run .\scripts\setup-miktex.ps1 first.' -ForegroundColor Red
     exit 1
 }
 
+$biber = Resolve-Tool 'biber.exe' $searchDirs
+$pygmentize = Resolve-Tool 'pygmentize.exe' $searchDirs
+if (-not $pygmentize) {
+    Write-Host 'warning: pygmentize was not found; minted code blocks will fail.' -ForegroundColor Yellow
+}
+
+$allDocs = @(Get-ChildItem -Path (Join-Path $repoRoot 'main-*.tex') -File | ForEach-Object { $_.BaseName } | Sort-Object)
+if ($allDocs.Count -eq 0) {
+    Write-Host "no main-*.tex entry points found in $repoRoot" -ForegroundColor Red
+    exit 2
+}
+
 $documents = @()
-if ($All) { $documents = $allDocs } else { $documents = @($Document) }
+if ($All -or -not $Document) {
+    $documents = $allDocs
+}
+else {
+    $documents = @($Document)
+}
+
+$outDirFull = [System.IO.Path]::GetFullPath($outDir)
+$repoRootFull = [System.IO.Path]::GetFullPath($repoRoot)
+if (-not $outDirFull.StartsWith($repoRootFull, [System.StringComparison]::OrdinalIgnoreCase)) {
+    if ($Clean) {
+        Write-Host "refusing to clean an output directory outside the template: $outDirFull" -ForegroundColor Red
+        exit 2
+    }
+}
 
 if ($Clean -and (Test-Path -LiteralPath $outDir)) {
     Get-ChildItem -LiteralPath $outDir -Force | Remove-Item -Recurse -Force
@@ -75,35 +114,65 @@ if (-not (Test-Path -LiteralPath $outDir)) {
 }
 
 $failures = 0
+$built = 0
 
-# xelatex resolves ./figs and ./fonts relative to the working directory,
-# so the build has to run from the repository root.
+# xelatex resolves ./fonts, ./figures and \input paths relative to the working
+# directory, so every build runs from the template root.
 Push-Location $repoRoot
 try {
     foreach ($doc in $documents) {
         $texFile = $doc + '.tex'
         if (-not (Test-Path -LiteralPath (Join-Path $repoRoot $texFile))) {
-            Write-Host "skip: $texFile not found" -ForegroundColor Yellow
+            Write-Host "$texFile not found" -ForegroundColor Red
             $failures++
             continue
         }
 
         Write-Host "==> $texFile" -ForegroundColor Cyan
+        $docFailures = 0
 
-        # Keep every option as its own array element; splatting the array with
-        # @xelatexArgs hands the arguments to the process untouched.
         $xelatexArgs = @(
             '-synctex=1',
             '-shell-escape',
             '-interaction=nonstopmode',
             '-file-line-error',
-            '-output-directory=./tmp',
+            "-output-directory=$outDirFull",
             $texFile
         )
 
-        for ($pass = 1; $pass -le 2; $pass++) {
+        # Pass 1: write .aux/.bcf and the first .toc.
+        & $xelatex @xelatexArgs | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host '    pass 1 failed' -ForegroundColor Red
+            $docFailures++
+        }
+
+        $passes = 2
+        if (Test-Path -LiteralPath (Join-Path $outDir ($doc + '.bcf'))) {
+            $passes = 3
+            if ($biber) {
+                & $biber "--input-directory=$outDirFull" "--output-directory=$outDirFull" $doc | Out-Null
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host '    biber ok'
+                }
+                else {
+                    Write-Host "    biber failed - see ${doc}.biber.log" -ForegroundColor Red
+                    $docFailures++
+                }
+            }
+            else {
+                Write-Host '    biber was not found; bibliography will be empty' -ForegroundColor Red
+                $docFailures++
+            }
+        }
+
+        # Remaining passes: settle TOC, references and the bibliography.
+        for ($pass = 2; $pass -le $passes; $pass++) {
             & $xelatex @xelatexArgs | Out-Null
-            Write-Host "    pass $pass (exit $LASTEXITCODE)"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host "    pass $pass failed" -ForegroundColor Red
+                $docFailures++
+            }
         }
 
         $log = Join-Path $outDir ($doc + '.log')
@@ -111,30 +180,38 @@ try {
 
         if (Test-Path -LiteralPath $log) {
             $logText = [System.IO.File]::ReadAllText($log, [System.Text.Encoding]::UTF8)
-            # "ignored error:" marks a TeX error that LaTeX recovered from.  longtable
-            # emits one when it splits a table across a page boundary and the output is
-            # unaffected, so those lines are excluded and the gate keeps catching real
-            # failures.
-            $errors   = ([regex]'\.tex:\d+:(?! ignored error:)').Matches($logText).Count
-            $overfull = ([regex]'(Overfull|Underfull)').Matches($logText).Count
-            $missing  = ([regex]'Missing character').Matches($logText).Count
+            # "ignored error:" marks a TeX error that LaTeX recovered from.  A
+            # longtable page split emits one; the output is unaffected.
+            $errors = ([regex]'\.tex:\d+:(?! ignored error:)').Matches($logText).Count
+            $boxes = ([regex]'(Overfull|Underfull)').Matches($logText).Count
+            $missing = ([regex]'Missing character').Matches($logText).Count
 
-            if ($errors -gt 0) {
-                Write-Host "    $errors error(s) - see tmp\$doc.log" -ForegroundColor Red
-                $failures++
+            Write-Host "    $passes pass(es), $errors error(s), $boxes box(es), $missing missing character(s)"
+
+            if ($errors -gt 0 -or $boxes -gt 0 -or $missing -gt 0) {
+                Write-Host "    not clean - see $doc.log" -ForegroundColor Red
+                $docFailures++
             }
-            else {
-                Write-Host "    clean: 0 errors, $overfull over/underfull box(es), $missing missing character(s)"
-            }
+        }
+        else {
+            Write-Host '    no log was produced' -ForegroundColor Red
+            $docFailures++
         }
 
         if (Test-Path -LiteralPath $pdf) {
             $kb = [math]::Round((Get-Item -LiteralPath $pdf).Length / 1KB)
-            Write-Host "    tmp\$doc.pdf  ($kb KB)" -ForegroundColor Green
+            Write-Host "    $doc.pdf  ($kb KB)" -ForegroundColor Green
         }
         else {
-            Write-Host "    no PDF was produced - see tmp\$doc.log" -ForegroundColor Red
+            Write-Host '    no PDF was produced' -ForegroundColor Red
+            $docFailures++
+        }
+
+        if ($docFailures -gt 0) {
             $failures++
+        }
+        else {
+            $built++
         }
     }
 }
@@ -144,7 +221,7 @@ finally {
 
 Write-Host ''
 if ($failures -eq 0) {
-    Write-Host 'Build finished.' -ForegroundColor Green
+    Write-Host "Build finished: $built document(s) clean." -ForegroundColor Green
     exit 0
 }
 Write-Host "Build finished with $failures problem(s)." -ForegroundColor Red

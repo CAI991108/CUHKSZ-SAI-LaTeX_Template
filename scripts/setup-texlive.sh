@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Install everything needed to build this template on macOS / Linux with TeX Live.
+# Install everything needed to build the SAI report template on macOS / Linux
+# with TeX Live.
 #
 #   * TeX Live (or MacTeX) must already be installed.
 #   * Missing LaTeX packages are installed with tlmgr, elevated with sudo when
@@ -23,34 +24,40 @@ fail()  { printf '    \033[31mFAIL\033[0m  %s\n' "$1"; }
 
 # ---------------------------------------------------------------------------
 #  TeX Live package names.  tlmgr resolves dependencies itself, so only the
-#  directly \usepackage'd packages (plus the font packages) are listed.
-#  tools -> array.sty + tabularx.sty, xltabular -> longtable + tabularx
-#  (tables that break across pages), graphics -> graphicx.sty,
-#  lm / lm-math -> the OpenType Latin Modern fonts, ctex -> xeCJK + zhnumber.
+#  directly used packages are listed.
+#  tools -> array.sty + tabularx.sty + longtable.sty,
+#  graphics -> graphicx.sty, lm / lm-math -> the OpenType Latin Modern fonts,
+#  ctex -> xeCJK + zhnumber, biblatex + biber -> the bibliography,
+#  latexmk -> the VS Code recipe.
 # ---------------------------------------------------------------------------
 PACKAGES=(
   xetex
   l3kernel
   l3packages
-  tools
-  xltabular
-  fix-cm
-  bookmark
   fontspec
   amsmath
   unicode-math
-  ctex
-  needspace
-  geometry
-  minted
-  xcolor
-  graphics
-  titling
-  enumitem
-  fancyhdr
-  hyperref
   lm
   lm-math
+  ctex
+  geometry
+  fancyhdr
+  graphics
+  tools
+  booktabs
+  float
+  caption
+  enumitem
+  needspace
+  etoolbox
+  xcolor
+  minted
+  csquotes
+  biblatex
+  biber
+  hyperref
+  bookmark
+  latexmk
 )
 
 # ---------------------------------------------------------------------------
@@ -137,8 +144,7 @@ for asset in \
   fonts/NotoSerifSC-Bold.otf \
   fonts/NotoSansSC-Regular.otf \
   fonts/NotoSansSC-Bold.otf \
-  fonts/LICENSE.txt \
-  figs/cuhk-sai-logo01.png
+  fonts/LICENSE.txt
 do
   if [ -f "${ROOT}/${asset}" ]; then
     ok "$asset"
@@ -147,6 +153,13 @@ do
     MISSING=$((MISSING + 1))
   fi
 done
+
+if [ -f "${ROOT}/figs/cuhk-sai-logo01.png" ]; then
+  ok 'figs/cuhk-sai-logo01.png'
+else
+  note 'figs/cuhk-sai-logo01.png is missing.'
+  note 'Add the letterhead back, or set \\SAIReportLogo{} and load the style with [nologo].'
+fi
 
 echo
 if [ "${MISSING}" -eq 0 ]; then
