@@ -13,6 +13,7 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-quick-start)
 [![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20vendored-c2185b?style=flat-square)](fonts/LICENSE.txt)
 [![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
+[![template](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml)
 
 [简体中文](README.md) · **English**
 
@@ -254,8 +255,8 @@ To use the template for a course report, either:
   Release flow: tag the source, `git subtree split --prefix=templates/sai-report`, push
   to the mirror, then tag the mirror. See [`PROVENANCE.md`](PROVENANCE.md) and
   [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- **Version:** v1.0.0 is the first release of the generic report template. Future
-  template changes start in the source repository and are released to the mirror.
+- **Version:** The v1.0.x series is the first release of the generic report template.
+  Future template changes start in the source repository and are released to the mirror.
 - **Pre-release check:** run `./scripts/check-release.sh` in the template root (needs
   XeLaTeX); use `--skip-build` to inspect existing PDFs only.
 - The old public issues #5–#10 (from the course-rubric era) are superseded by map #1 in

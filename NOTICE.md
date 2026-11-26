@@ -9,11 +9,14 @@ MIT © 2026 Zijin CAI and contributors. See [`LICENSE`](LICENSE).
 
 ## Fonts
 
-- **Noto Serif SC / Noto Sans SC** (the four static OTFs in `fonts/`): Copyright
-  2014–2021 Adobe (<http://www.adobe.com/>) and Google Inc. Licensed under the
-  **SIL Open Font License 1.1**. The full licence text is in
-  [`fonts/LICENSE.txt`](fonts/LICENSE.txt); upstream is
-  <https://github.com/notofonts/noto-cjk>.
+- **Noto Serif SC** (the two Serif OTFs in `fonts/`): Copyright 2017–2024 Adobe
+  (<http://www.adobe.com/>). Noto is a trademark of Google Inc.
+- **Noto Sans SC** (the two Sans OTFs in `fonts/`): Copyright 2014–2021 Adobe
+  (<http://www.adobe.com/>). Noto is a trademark of Google Inc.
+
+Both families are licensed under the **SIL Open Font License 1.1**. The full licence
+text is in [`fonts/LICENSE.txt`](fonts/LICENSE.txt); upstream is
+<https://github.com/notofonts/noto-cjk>.
 - **Latin Modern** (loaded from the TeX distribution, not vendored here): GUST Font
   Licence; see the `lm` package documentation in your TeX distribution.
 

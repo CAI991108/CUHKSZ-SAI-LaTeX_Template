@@ -13,6 +13,7 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D4?style=flat-square)](#-快速开始)
 [![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20%E5%86%85%E7%BD%AE-c2185b?style=flat-square)](fonts/LICENSE.txt)
 [![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
+[![template](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml)
 
 **简体中文** · [English](README.en.md)
 
@@ -241,7 +242,7 @@ LaTeX 课程材料放在源仓库的 `docs/guidance/latex/week7-milestone/`；�
   在源仓库打 tag，`git subtree split --prefix=templates/sai-report`，推送到镜像仓库，
   再在镜像仓库打同名 tag。见 [`PROVENANCE.md`](PROVENANCE.md) 与
   [`CONTRIBUTING.md`](CONTRIBUTING.md)。
-- **版本**：v1.0.0 是通用报告模板的首个版本；之后的模板改动先改源仓库，再发布镜像。
+- **版本**：v1.0.x 是通用报告模板的首个系列；之后的模板改动先改源仓库，再发布镜像。
 - **发布前检查**：在模板目录运行 `./scripts/check-release.sh`（需要 XeLaTeX）；只想检查已有 PDF 时用 `--skip-build`。
 - 公开仓库旧 issue #5–#10（课程细则时代）由源仓库 map #1 接管，发布时逐条关闭并附指针。
 

@@ -16,7 +16,7 @@ jobs:
     name: Build SAI report template
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check bilingual parity
         run: python3 scripts/check-parity.py
@@ -38,7 +38,7 @@ jobs:
           fi
 
       - name: Upload PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sai-report-template-pdfs
           path: |
@@ -48,7 +48,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sai-report-template-logs
           path: tmp/*.log
