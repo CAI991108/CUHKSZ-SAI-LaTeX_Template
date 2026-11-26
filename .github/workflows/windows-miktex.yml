@@ -1,0 +1,74 @@
+name: windows-miktex
+
+# Real Windows + MiKTeX build.  The TeX Live job in template.yml runs inside a
+# container and never executes the Windows scripts, so this is the only job that
+# can catch Windows-only regressions: a MiKTeX package id that no longer exists,
+# a redirected stderr that Windows PowerShell 5.1 turns into a terminating
+# error, or a missing TEXMF_OUTPUT_DIRECTORY.
+#
+# The steps go through the .cmd wrappers on purpose: that is the path the README
+# documents for Windows users, and it runs the scripts under Windows PowerShell
+# 5.1 rather than pwsh.
+#
+# It stays off the pull_request path because installing MiKTeX on the runner
+# takes several minutes.  It runs for pushes to main, for release tags, and on
+# demand from the Actions tab.
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build with MiKTeX on Windows
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install MiKTeX
+        run: choco install miktex --no-progress -y
+
+      - name: Configure MiKTeX for unattended use
+        shell: pwsh
+        run: |
+          $bin = Join-Path $env:ProgramFiles 'MiKTeX\miktex\bin\x64'
+          if (-not (Test-Path -LiteralPath $bin)) {
+            throw "MiKTeX was not found in $bin after choco install"
+          }
+          $init = Join-Path $bin 'initexmf.exe'
+          $ErrorActionPreference = 'Continue'
+          & $init --set-config-value=[MPM]AutoInstall=1
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host '::warning::could not set [MPM]AutoInstall in user scope'
+          }
+          & $init --show-config-value=[MPM]AutoInstall
+
+      - name: Install packages and Pygments
+        shell: cmd
+        run: scripts\setup.cmd
+
+      - name: Build ZH and EN
+        shell: cmd
+        run: scripts\build.cmd -All
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-miktex-pdfs
+          path: |
+            tmp/main-zh.pdf
+            tmp/main-en.pdf
+          if-no-files-found: error
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-miktex-logs
+          path: tmp/*.log
+          if-no-files-found: ignore

@@ -48,8 +48,8 @@ in this directory. It lives under `docs/guidance/latex/` in the course repositor
 - [ ] `grep -rniE 'AIE3905|S03|S06|Zijin|理工学院|School of Science'` finds only intentional
       provenance/README/NOTICE mentions; the template sources are clean.
 - [ ] PDF metadata is generic (example title/author), A4, fonts embedded.
-- [ ] The public mirror's workflow (`.github/workflows/template.yml` in this directory)
-      builds the same files and uploads the PDFs.
+- [ ] The public mirror's workflows (`.github/workflows/template.yml` and
+      `windows-miktex.yml` in this directory) build the same files and upload the PDFs.
 - [ ] Update `README.md`, `README.en.md` and `NOTICE.md` if the user-facing surface changed.
 - [ ] Tag `vX.Y.Z`; split the subtree; push the mirror; tag the mirror; attach the PDFs.
 - [ ] Close the superseded public issues (#5–#10) with pointers to the new map/tag.

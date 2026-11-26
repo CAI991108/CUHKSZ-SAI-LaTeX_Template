@@ -14,6 +14,7 @@
 [![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20%E5%86%85%E7%BD%AE-c2185b?style=flat-square)](fonts/LICENSE.txt)
 [![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
 [![template](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml)
+[![windows-miktex](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/windows-miktex.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/windows-miktex.yml)
 
 **简体中文** · [English](README.en.md)
 
@@ -154,7 +155,7 @@ templates/sai-report/                   # 公开镜像里就是仓库根目录
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # 装宏包 + Pygments
 │   ├── build.ps1 · build.sh                   # 编译 + 日志门禁 + biber
 │   └── check-parity.py                        # 中英结构比对
-├── .github/                            # 公开镜像 CI（workflows/template.yml）+ dependabot
+├── .github/                            # 公开镜像 CI（template.yml、windows-miktex.yml）+ dependabot
 ├── .vscode/settings.json               # LaTeX Workshop recipe
 ├── CONTRIBUTING.md · NOTICE.md         # 发布检查清单 + 许可说明
 ├── .gitattributes · .gitignore · LICENSE

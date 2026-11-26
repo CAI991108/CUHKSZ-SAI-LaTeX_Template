@@ -14,6 +14,7 @@
 [![Fonts](https://img.shields.io/badge/fonts-Noto%20CJK%20vendored-c2185b?style=flat-square)](fonts/LICENSE.txt)
 [![Distribution](https://img.shields.io/badge/distribution-TeX%20Live%20%7C%20MiKTeX-3D6117?style=flat-square)](https://www.tug.org/texlive/)
 [![template](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/template.yml)
+[![windows-miktex](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/windows-miktex.yml/badge.svg)](https://github.com/CAI991108/CUHKSZ-SAI-LaTeX_Template/actions/workflows/windows-miktex.yml)
 
 [简体中文](README.md) · **English**
 
@@ -161,7 +162,7 @@ templates/sai-report/                   # the repository root in the public mirr
 │   ├── setup-miktex.ps1 · setup-texlive.sh    # packages + Pygments
 │   ├── build.ps1 · build.sh                   # build + log gate + biber
 │   └── check-parity.py                        # ZH/EN structural comparison
-├── .github/                            # public-mirror CI (workflows/template.yml) + dependabot
+├── .github/                            # public-mirror CI (template.yml, windows-miktex.yml) + dependabot
 ├── .vscode/settings.json               # LaTeX Workshop recipe
 ├── CONTRIBUTING.md · NOTICE.md         # release checklist + licence notices
 ├── .gitattributes · .gitignore · LICENSE
